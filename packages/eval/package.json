@@ -1,0 +1,31 @@
+{
+  "name": "@formium/eval",
+  "version": "0.0.4",
+  "description": "Internal, evaluation logic for Formium",
+  "author": "Jared Palmer <hello@formium.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formium/formium.git",
+    "directory": "packages/eval"
+  },
+  "scripts": {
+    "start": "tsdx watch --verbose",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/eval.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "tsdx": "latest"
+  }
+}

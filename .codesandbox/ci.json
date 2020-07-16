@@ -1,0 +1,10 @@
+{
+  "sandboxes": ["ooh2y"],
+  "buildCommand": "build",
+  "packages": [
+    "packages/react",
+    "packages/client",
+    "packages/utils",
+    "packages/eval"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "@formium/react",
+  "version": "0.0.4",
+  "description": "Official React library for Formium",
+  "author": "Jared Palmer <hello@formium.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formium/formium.git",
+    "directory": "packages/react"
+  },
+  "scripts": {
+    "start": "tsdx watch --verbose",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/react.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "dependencies": {
+    "@formium/utils": "0.0.4",
+    "@formium/eval": "0.0.4",
+    "tslib": "^2.0.0",
+    "formik": "^2.1.4",
+    "yup": "^0.28.1"
+  },
+  "devDependencies": {
+    "tsdx": "latest",
+    "@types/yup": "^0.26.32"
+  }
+}

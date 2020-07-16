@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+      Formium x Tailwind UI Contact Form with Droparea multi-file uploads
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@tailwindcss/ui/dist/tailwind-ui.min.css"
+    />
+  </head>
+
+  <body class="bg-gray-50">
+    <div
+      class="container mx-auto max-w-md bg-white rounded shadow-lg my-16 overflow-hidden"
+    >
+      <form
+        action="http://localhost:8080/submit/my-project/beta-invites"
+        method="POST"
+        enctype="x-www-form-urlencoded"
+      >
+        <input type="file" name="picture" />
+        <input type="submit" value="Send" />
+      </form>
+      <div>
+        <h1 class="text-center font-bold text-4xl tracking-tight px-4 py-2">
+          Contact Me
+        </h1>
+        <form id="my-form" class="">
+          <div class="p-4 space-y-4 ">
+            <p>
+              <label
+                for="firstName"
+                class="block text-gray-700 text-sm leading-5 font-medium"
+                >First Name</label
+              >
+              <input
+                type="text"
+                name="firstName"
+                id="firstName"
+                class="form-input w-full shadow-sm"
+              />
+            </p>
+            <p>
+              <label
+                for="lastName"
+                class="block text-gray-700 text-sm leading-5 font-medium"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                name="lastName"
+                id="lastName"
+                class="form-input w-full shadow-sm"
+              />
+            </p>
+            <p>
+              <label
+                for="email"
+                class="block text-gray-700 text-sm leading-5 font-medium"
+                >Email</label
+              >
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-input w-full shadow-sm"
+              />
+            </p>
+            <p>
+              <label
+                for="message"
+                class="block text-gray-700 text-sm leading-5 font-medium"
+                >Message</label
+              >
+              <textarea
+                name="message"
+                id="message"
+                class="form-textarea w-full shadow-sm"
+              ></textarea>
+            </p>
+
+            <label
+              for="attatchment"
+              class="block text-gray-700 text-sm leading-5 font-medium"
+              >Attachment</label
+            >
+            <div id="gallery" class="grid grid-cols-4 gap-4"></div>
+            <div
+              id="droparea"
+              class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+            >
+              <div class="text-center">
+                <svg
+                  class="mx-auto h-12 w-12 text-gray-400"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 48 48"
+                >
+                  <path
+                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <p class="mt-1 text-sm text-gray-600">
+                  <input
+                    type="file"
+                    name="attachment"
+                    id="myfile"
+                    multiple
+                    onchange="handleFiles(this.files)"
+                    class="sr-only form-input w-full shadow-sm"
+                  />
+                  <label
+                    for="myfile"
+                    class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition duration-150 ease-in-out"
+                  >
+                    Upload a file
+                  </label>
+                  or drag and drop
+                </p>
+                <p class="mt-1 text-xs text-gray-500">
+                  PNG, JPG, GIF up to 10MB
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+            <span class="inline-flex rounded-md shadow-sm">
+              <button
+                type="submit"
+                class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+              >
+                Submit
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="../../dist/formium.umd.production.min.js"></script>
+    <script>
+      const FORM_SLUG = 'beta-invites';
+      const PROJECT_ID = 'my-project';
+
+      // Create a Formium Client
+      const client = window.Formium.createClient(PROJECT_ID);
+
+      // Grab relevant DOM elements
+      const form = document.getElementById('my-form');
+      const dropArea = document.getElementById('droparea');
+
+      let attachments;
+
+      // Setup event listeners
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+      });
+
+      // Highlight drop area when item is dragged over it
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, highlight, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+      });
+
+      // Handle dropped files
+      dropArea.addEventListener('drop', handleDrop, false);
+
+      // Handle submit
+      form.addEventListener('submit', handleSubmit, false);
+
+      // Event handlers
+      function preventDefaults(event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      function highlight(event) {
+        dropArea.classList.add('bg-gray-100');
+      }
+
+      function unhighlight(event) {
+        dropArea.classList.remove('bg-gray-100');
+      }
+
+      function handleDrop(event) {
+        const dt = event.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+      }
+
+      function handleFiles(files) {
+        files = [...files]; // clone
+        attachments = files;
+        files.forEach(previewFile);
+      }
+
+      function previewFile(file) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = function() {
+          let img = document.createElement('img');
+          img.src = reader.result;
+          img.height = 100;
+          img.classList = 'border rounded';
+          document.getElementById('gallery').appendChild(img);
+        };
+      }
+
+      async function handleSubmit(event) {
+        event.preventDefault();
+        const data = new FormData(form);
+
+        // Loop through all file attachments and upload them.
+        // We get back an array of URLs which we will keep on the submission.
+        const attachmentUrls = await Promise.all(
+          attachments.map(file => client.uploadFile('YOUR_FORM_SLUG', file))
+        );
+
+        // Create a new key for the urls
+        for (let url of attachmentUrls) {
+          data.append('attachmentUrls', url);
+        }
+
+        // Remove the old key, Formium's API will not accept it
+        data.delete('attachment');
+
+        // Send the sumbission to Formium
+        await client
+          .submitForm(FORM_SLUG, data)
+          .then(response => alert(JSON.stringify(response, null, 2)))
+          .catch(error => console.log(error));
+      }
+    </script>
+  </body>
+</html>

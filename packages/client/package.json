@@ -1,0 +1,34 @@
+{
+  "name": "@formium/client",
+  "version": "0.0.4",
+  "description": "Autogenerate IDs to facilitate WAI-ARIA and server rendering.",
+  "author": "Jared Palmer <hello@formium.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formium/formium.git",
+    "directory": "packages/client"
+  },
+  "scripts": {
+    "start": "tsdx watch --verbose",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "module": "dist/client.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "dependencies": {
+    "@formium/utils": "0.0.4",
+    "isomorphic-unfetch": "^3.0.0",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {
+    "tsdx": "latest"
+  }
+}

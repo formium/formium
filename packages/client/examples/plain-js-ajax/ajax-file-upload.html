@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Playground</title>
+  </head>
+
+  <body>
+    <form id="my-form">
+      <p>
+        <label for="firstName" class="block">First Name</label>
+        <input type="text" name="firstName" id="firstName" />
+      </p>
+      <p>
+        <label for="lastName" class="block">Last Name</label>
+        <input type="text" name="lastName" id="lastName" />
+      </p>
+      <p>
+        <label for="email" class="block">Email</label>
+        <input type="email" name="email" id="email" />
+      </p>
+      <p>
+        <label for="message" class="block">Message</label>
+        <textarea name="message" id="message"></textarea>
+      </p>
+      <p>
+        <label for="file" class="block">Attachment</label>
+        <input type="file" name="file" id="file" />
+      </p>
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+    <script src="../dist/formium.umd.production.min.js"></script>
+    <script>
+      const PROJECT_ID = 'YOUR_PROJECT_ID';
+      const FORM_SLUG = 'YOUR_FORM_SLUG';
+      // Create a Formium API client
+      const client = window.Formium.createClient(PROJECT_ID);
+      const form = document.getElementById('my-form');
+
+      form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        // Convert into FormData
+        const data = new FormData(form);
+
+        // Get the image binary
+        const image = data.get('file');
+
+        // Upload the file to Formium and then replace it
+        const url = await client.uploadFile(FORM_SLUG, image);
+        data.set('file', url);
+
+        // Submit the full payload
+        await client
+          .submitForm(FORM_SLUG, data)
+          .then(response => alert(JSON.stringify(response, null, 2)))
+          .catch(error => console.log(error));
+      });
+    </script>
+  </body>
+</html>

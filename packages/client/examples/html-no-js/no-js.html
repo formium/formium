@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>No JS</title>
+  </head>
+
+  <body>
+    <form
+      method="post"
+      action="https://api.formium.io/submit/{YOUR_PROJECT_ID}/{YOUR_FORM_SLUG}"
+    >
+      <p>
+        <label for="firstName" class="block">First Name</label>
+        <input type="text" name="firstName" id="firstName" />
+      </p>
+      <p>
+        <label for="lastName" class="block">Last Name</label>
+        <input type="text" name="lastName" id="lastName" />
+      </p>
+      <p>
+        <label for="email" class="block">Email</label>
+        <input type="email" name="email" id="email" />
+      </p>
+      <p>
+        <label for="message" class="block">Message</label>
+        <textarea name="message" id="message"></textarea>
+      </p>
+      <p>
+        <label for="attatchment" class="block">Attachment</label>
+        <input type="file" name="attachment" id="myfile" />
+      </p>
+      <br />
+      <p>
+        <button type="submit">
+          Submit
+        </button>
+      </p>
+    </form>
+  </body>
+</html>

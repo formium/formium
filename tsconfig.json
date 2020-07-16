@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.build.json",
+  "include": ["packages", "types", "scripts"],
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "paths": {
+      "@formium/utils": ["packages/utils/src"],
+      "@formium/client": ["packages/client/src"],
+      "@formium/eval": ["packages/eval/src"],
+      "@formium/react": ["packages/react/src"],
+      "$test/*": ["test/*"]
+    }
+  }
+}
