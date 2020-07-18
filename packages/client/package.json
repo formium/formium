@@ -1,6 +1,6 @@
 {
   "name": "@formium/client",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Autogenerate IDs to facilitate WAI-ARIA and server rendering.",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
@@ -23,7 +23,7 @@
     "dist"
   ],
   "dependencies": {
-    "@formium/utils": "^0.0.8",
+    "@formium/utils": "^0.0.9",
     "isomorphic-unfetch": "^3.0.0",
     "tslib": "^2.0.0"
   },
