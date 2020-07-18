@@ -5,7 +5,7 @@ import { useSSG } from '.nextra/ssg';
 
 export const getStaticProps = ({ params }) => {
   return (
-    fetch('https://api.github.com/repos/formium/tsdx/releases')
+    fetch('https://api.github.com/repos/formium/formium/releases')
       .then(res => res.json())
       // we keep the most recent 3 releases here
       .then(releases => ({ props: { ssg: releases.slice(0, 10) } }))

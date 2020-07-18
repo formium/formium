@@ -10,7 +10,9 @@
     "typescript": "^3.9.7"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    ".yalc/*",
+    ".yalc/@*/*"
   ],
   "scripts": {
     "lerna": "lerna",

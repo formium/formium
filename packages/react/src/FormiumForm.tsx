@@ -22,21 +22,14 @@ import { unstable_FormiumLogic as FormiumLogic } from './FormiumLogic';
 import { FormElementType, FormElement, Form } from '@formium/client';
 import * as Yup from 'yup';
 import { useLocalStorage } from './utils/useLocalStorage';
+import { useIsomorphicLayoutEffect } from './utils/useIsomorphicLayoutEffect';
 
 function SubmitButton(props: any) {
-  return (
-    <button type="submit" {...props}>
-      Submit
-    </button>
-  );
+  return <button type="submit" {...props} />;
 }
 
 function Button(props: any) {
-  return (
-    <button type="button" {...props}>
-      Submit
-    </button>
-  );
+  return <button type="button" {...props} />;
 }
 
 function Header({
@@ -687,7 +680,7 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
     );
   }, [formikValues, touched, errors, formikInitialValues]);
 
-  React.useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     try {
       const maybeF = localStorage.getItem('formik');
       if (maybeF) {
@@ -704,12 +697,7 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
             {activePage}
             <components.FooterWrapper>
               {page > 0 && (
-                <components.Button
-                  type="button"
-                  className="secondary"
-                  style={{ marginRight: 16 }}
-                  onClick={previous}
-                >
+                <components.Button type="button" onClick={previous}>
                   Back
                 </components.Button>
               )}

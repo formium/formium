@@ -5,9 +5,8 @@ export default {
   titleSuffix: ' – Formium',
   logo: (
     <>
-      <Logo height={36} />
-      <span className=" font-extrabold hidden md:inline sr-only">
-        Formium Docs
+      <span className=" font-extrabold hidden md:inline">
+        Formium<span className="text-gray-500">.io</span> Docs
       </span>
     </>
   ),
