@@ -36,5 +36,8 @@
   "devDependencies": {
     "@types/yup": "^0.26.32",
     "tsdx": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

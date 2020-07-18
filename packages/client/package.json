@@ -3,7 +3,6 @@
   "version": "0.0.7",
   "description": "Autogenerate IDs to facilitate WAI-ARIA and server rendering.",
   "author": "Jared Palmer <hello@formium.io>",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/formium/formium.git",
@@ -30,5 +29,8 @@
   },
   "devDependencies": {
     "tsdx": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

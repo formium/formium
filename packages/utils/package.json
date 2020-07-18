@@ -27,5 +27,8 @@
   },
   "devDependencies": {
     "tsdx": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
