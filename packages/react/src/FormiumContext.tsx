@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import * as React from 'react';
-import { Form, FormiumClient } from '@formium/client';
+import type { FormiumClient } from '@formium/client';
 
 export const FormiumContext = React.createContext<FormiumClient>({} as any);
 
