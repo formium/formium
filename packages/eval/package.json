@@ -1,6 +1,6 @@
 {
   "name": "@formium/eval",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Internal, evaluation logic for Formium",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
