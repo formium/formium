@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "tsdx watch --verbose",
-    "build": "tsdx build",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepublish": "npm run build"
@@ -34,8 +34,7 @@
     "yup": "^0.28.1"
   },
   "devDependencies": {
-    "@types/yup": "^0.26.32",
-    "tsdx": "latest"
+    "@types/yup": "^0.26.32"
   },
   "publishConfig": {
     "access": "public"

@@ -7,6 +7,7 @@
     "got": "10.0.4",
     "lerna": "^3.15.0",
     "release": "6.0.1",
+    "tsdx": "^0.13.2",
     "typescript": "^3.9.7"
   },
   "workspaces": [

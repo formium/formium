@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "tsdx watch --verbose",
-    "build": "tsdx build",
+    "build": "tsdx build  --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepublish": "npm run build"
@@ -26,9 +26,6 @@
     "@formium/utils": "^0.0.8",
     "isomorphic-unfetch": "^3.0.0",
     "tslib": "^2.0.0"
-  },
-  "devDependencies": {
-    "tsdx": "latest"
   },
   "publishConfig": {
     "access": "public"

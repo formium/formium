@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "tsdx watch --verbose",
-    "build": "tsdx build",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepublish": "npm run build"
@@ -24,9 +24,6 @@
   ],
   "dependencies": {
     "tslib": "^2.0.0"
-  },
-  "devDependencies": {
-    "tsdx": "latest"
   },
   "publishConfig": {
     "access": "public"
