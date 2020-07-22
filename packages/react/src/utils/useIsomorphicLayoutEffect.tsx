@@ -6,5 +6,5 @@ import { canUseDOM } from '@formium/utils';
 
 // @see https://gist.github.com/gaearon/e7d97cdf38a2907924ea12e4ebdf3c85
 export const useIsomorphicLayoutEffect = canUseDOM()
-  ? React.useEffect
-  : React.useLayoutEffect;
+  ? React.useLayoutEffect
+  : React.useEffect;

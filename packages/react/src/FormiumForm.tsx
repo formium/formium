@@ -416,10 +416,13 @@ export function getValidationSchema(inputElements?: FormElement[]) {
             );
           }
         }
-
+        console.log(curr);
         if (curr.required) {
+          console.log(curr);
           // @todo fix type
-          validation = (validation as any).required('Required');
+          validation = (validation as any).required(
+            curr.requiredText ?? 'This question requires an answer.'
+          );
         }
 
         // @todo fix type
@@ -436,7 +439,7 @@ export function getInitialValues<Values>(inputElements: NestedField[]) {
     if (curr.type === FormElementType.CHECKBOX) {
       (prev as any)[curr.slug] = [];
     } else {
-      (prev as any)[curr.slug] = '';
+      (prev as any)[curr.slug] = curr.defaultValue ?? '';
     }
     return prev;
   }, {} as Values);
@@ -512,6 +515,10 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                     actions,
                     items,
                     hidden,
+                    required,
+                    requiredText,
+                    defaultValue,
+                    placeholder,
                     ...item
                   } = element;
                   if (hidden) {
@@ -529,6 +536,8 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                         <components.ShortText
                           label={item.title}
                           name={item.slug}
+                          placeholder={placeholder}
+                          required={required}
                           id={id}
                           {...item}
                         />
@@ -536,6 +545,8 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                         <components.Email
                           label={item.title}
                           name={item.slug}
+                          placeholder={placeholder}
+                          required={required}
                           id={id}
                           {...item}
                         />
@@ -543,6 +554,8 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                         <components.Url
                           label={item.title}
                           name={item.slug}
+                          placeholder={placeholder}
+                          required={required}
                           id={id}
                           {...item}
                         />
@@ -569,6 +582,8 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                           <components.LongText
                             label={item.title}
                             name={item.slug}
+                            placeholder={placeholder}
+                            required={required}
                             id={id}
                             {...item}
                           />
@@ -578,6 +593,8 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                           <components.Date
                             label={item.title}
                             name={item.slug}
+                            placeholder={placeholder}
+                            required={required}
                             id={id}
                             {...item}
                           />
@@ -668,27 +685,27 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
     initialValues: formikInitialValues,
   } = formik;
 
-  React.useEffect(() => {
-    localStorage.setItem(
-      'formik',
-      JSON.stringify({
-        values: formikValues,
-        touched,
-        errors,
-        initialValues: formikInitialValues,
-      })
-    );
-  }, [formikValues, touched, errors, formikInitialValues]);
+  // React.useEffect(() => {
+  //   localStorage.setItem(
+  //     'formik',
+  //     JSON.stringify({
+  //       values: formikValues,
+  //       touched,
+  //       errors,
+  //       initialValues: formikInitialValues,
+  //     })
+  //   );
+  // }, [formikValues, touched, errors, formikInitialValues]);
 
-  useIsomorphicLayoutEffect(() => {
-    try {
-      const maybeF = localStorage.getItem('formik');
-      if (maybeF) {
-        const newState = JSON.parse(maybeF);
-        setFormikState(newState);
-      }
-    } catch (_error) {}
-  }, [setFormikState]);
+  // useIsomorphicLayoutEffect(() => {
+  //   try {
+  //     const maybeF = localStorage.getItem('formik');
+  //     if (maybeF) {
+  //       const newState = JSON.parse(maybeF);
+  //       setFormikState(newState);
+  //     }
+  //   } catch (_error) {}
+  // }, [setFormikState]);
   return (
     <FormikContext.Provider value={formik}>
       <FormikForm>

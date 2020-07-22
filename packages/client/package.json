@@ -9,8 +9,8 @@
     "directory": "packages/client"
   },
   "scripts": {
-    "start": "tsdx watch --verbose",
-    "build": "tsdx build  --tsconfig tsconfig.build.json",
+    "start": "tsdx watch --format=esm,cjs,umd --name Formium --tsconfig tsconfig.build.json  --verbose --noClean --onSuccess \"yalc push\"",
+    "build": "tsdx build --format=esm,cjs,umd --name Formium --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
     "prepublish": "npm run build"
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "@formium/utils": "^0.0.10",
-    "isomorphic-unfetch": "^3.0.0",
+    "cross-fetch": "^3.0.5",
     "tslib": "^2.0.0"
   },
   "publishConfig": {

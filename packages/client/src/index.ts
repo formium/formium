@@ -6,7 +6,6 @@
  *
  */
 import { Form } from './types/Form';
-import fetch from 'isomorphic-unfetch';
 
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
@@ -24,9 +23,9 @@ export function _createFetcher(
   return function fetcher(endpoint: string, options: RequestInit = {}) {
     return fetchImplementation(baseUrl + endpoint, {
       headers: {
-        'X-Formium-Client': '@formium/client',
-        'X-Formium-Client-Version': __VERSION__,
-        Authentication: `Bearer ${apiToken}`,
+        'X-Formik-Client': '@formium/client',
+        'X-Formik-Client-Version': __VERSION__,
+        // Authentication: `Bearer ${apiToken}`,
         ...options?.headers,
       },
       ...options,

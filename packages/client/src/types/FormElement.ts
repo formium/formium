@@ -45,9 +45,29 @@ export interface FormElement {
   required?: boolean;
 
   /**
+   * is the element required
+   */
+  requiredText?: string;
+
+  /**
    * is the element hidden (initially)
    */
   hidden?: boolean;
+
+  /**
+   * Can the field be dynamically populated?
+   */
+  dynamic?: boolean;
+
+  /**
+   * The name of the dynamic parameter
+   */
+  dynamicParam?: string;
+
+  /**
+   * The name of the dynamic parameter
+   */
+  placeholder?: string;
 
   /**
    * Minimum value allowed in the answer, must be a positive integer.
@@ -55,9 +75,14 @@ export interface FormElement {
   minValue?: number;
 
   /**
+   * Minimum number of characters allowed in the answer, must be a positive integer.
+   */
+  minLength?: number;
+
+  /**
    * Initial value of element
    */
-  initialValue?: string;
+  defaultValue?: string;
 
   /**
    * Maximum value allowed in the answer, must be a positive integer.
@@ -65,7 +90,7 @@ export interface FormElement {
   maxValue?: number;
 
   /**
-   * Maximum number of characters allowed in the answer.
+   * Maximum number of characters allowed in the answer, must be a positive integer.
    */
   maxLength?: number;
 
@@ -111,11 +136,16 @@ export enum FormElementType {
   TIME = <any>'TIME',
   URL = <any>'URL',
   CHOICE = <any>'CHOICE',
-  GROUP = <any>'GROUP',
   RADIO = <any>'RADIO',
   BOOLEAN = <any>'BOOLEAN',
   CHECKBOX = <any>'CHECKBOX',
   PAGE = <any>'PAGE',
+  GROUP = <any>'GROUP',
+  STAR_RATING = <any>'STAR_RATING',
+  NPS = <any>'NPS',
+  HIDDEN = <any>'HIDDEN',
+  DROPDOWN = <any>'DROPDOWN',
+  PAYMENT = <any>'PAYMENT',
 }
 export enum FormElementUploadTypes {
   JPG = <any>'JPG',
