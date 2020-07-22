@@ -416,9 +416,8 @@ export function getValidationSchema(inputElements?: FormElement[]) {
             );
           }
         }
-        console.log(curr);
+
         if (curr.required) {
-          console.log(curr);
           // @todo fix type
           validation = (validation as any).required(
             curr.requiredText ?? 'This question requires an answer.'
