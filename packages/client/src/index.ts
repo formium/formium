@@ -6,7 +6,7 @@
  *
  */
 import { Form } from './types/Form';
-
+import qs from 'query-string';
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
  *
@@ -105,6 +105,37 @@ export class FormiumClient {
       options?.fetchImplementation ?? fetch,
       options?.apiToken
     );
+  }
+
+  /**
+   * Return a forms in a project
+   *
+   * @param query - Query parameters
+   * @param fetchOptions - Additional request options
+   * @public
+   */
+  findForms(
+    query: {
+      actionId?: string;
+      from?: string;
+      limit?: number;
+    },
+    fetchOptions?: RequestInit
+  ): Promise<{
+    data: Form;
+    next?: string;
+  }> {
+    let url =
+      `/v1/form?` + qs.stringify({ projectID: this.projectId, ...query });
+
+    return this._fetcher(url, {
+      method: 'GET',
+      ...fetchOptions,
+      headers: {
+        'Content-Type': 'application/json',
+        ...fetchOptions?.headers,
+      },
+    }).then(res => res.json());
   }
 
   /**
