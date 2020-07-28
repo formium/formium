@@ -1,10 +1,9 @@
 {
   "index": "Introduction",
   "getting-started": "Getting Started",
-  "customization": "Customization",
-  "api-reference": "API Reference",
-  "change-log": "Change Log",
+
   "actions": "Actions",
   "guides": "Guides",
-  "billing": "Billing"
+  "billing": "Billing",
+  "change-log": "Change Log"
 }
