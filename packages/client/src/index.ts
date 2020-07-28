@@ -146,14 +146,23 @@ export class FormiumClient {
    * @param fetchOptions - Additional request options
    * @public
    */
-  getFormBySlug(formSlug: string, fetchOptions?: RequestInit): Promise<Form> {
+  getFormBySlug(
+    formSlug: string,
+    query?: { revisionId?: string },
+    fetchOptions?: RequestInit
+  ): Promise<Form> {
     let url = `/v1/form/slug/${this.projectId}/${formSlug}`;
-
+    let headers = {};
+    if (query && query.revisionId)
+      headers = {
+        'X-Formik-Revision': query.revisionId,
+      };
     return this._fetcher(url, {
       method: 'GET',
       ...fetchOptions,
       headers: {
         'Content-Type': 'application/json',
+        ...headers,
         ...fetchOptions?.headers,
       },
     }).then(res => res.json());
@@ -167,14 +176,23 @@ export class FormiumClient {
    * @param fetchOptions - Additional request options
    * @public
    */
-  getFormById(id: string, fetchOptions?: RequestInit): Promise<Form> {
+  getFormById(
+    id: string,
+    query?: { revisionId?: string },
+    fetchOptions?: RequestInit
+  ): Promise<Form> {
     let url = `/v1/form/${id}`;
-
+    let headers = {};
+    if (query && query.revisionId)
+      headers = {
+        'X-Formik-Revision': query.revisionId,
+      };
     return this._fetcher(url, {
       method: 'GET',
       ...fetchOptions,
       headers: {
         'Content-Type': 'application/json',
+        ...headers,
         ...fetchOptions?.headers,
       },
     }).then(res => res.json());
