@@ -8,3 +8,4 @@ export * from './canUseDOM';
 export * from './getOwnerDocument';
 export * from './makeId';
 export * from './toSlug';
+export * from './deepMerge';

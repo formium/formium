@@ -7,6 +7,7 @@
  */
 import { Form } from './types/Form';
 import qs from 'query-string';
+import { deepMerge } from '@formium/utils';
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
  *
@@ -21,15 +22,14 @@ export function _createFetcher(
   apiToken?: string
 ) {
   return function fetcher(endpoint: string, options: RequestInit = {}) {
-    return fetchImplementation(baseUrl + endpoint, {
+    const opts = {
       headers: {
         'X-Formik-Client': '@formium/client',
         'X-Formik-Client-Version': __VERSION__,
-        // Authentication: `Bearer ${apiToken}`,
-        ...options?.headers,
+        Authorization: `Bearer ${apiToken}`,
       },
-      ...options,
-    });
+    };
+    return fetchImplementation(baseUrl + endpoint, deepMerge(opts, options));
   };
 }
 
@@ -126,16 +126,19 @@ export class FormiumClient {
     next?: string;
   }> {
     let url =
-      `/v1/form?` + qs.stringify({ projectID: this.projectId, ...query });
-
-    return this._fetcher(url, {
-      method: 'GET',
-      ...fetchOptions,
-      headers: {
-        'Content-Type': 'application/json',
-        ...fetchOptions?.headers,
-      },
-    }).then(res => res.json());
+      `/v1/form?` + qs.stringify({ projectId: this.projectId, ...query });
+    return this._fetcher(
+      url,
+      deepMerge(
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+        fetchOptions
+      )
+    ).then(res => res.json());
   }
 
   /**
@@ -151,7 +154,7 @@ export class FormiumClient {
     query?: { revisionId?: string },
     fetchOptions?: RequestInit
   ): Promise<Form> {
-    let url = `/v1/form/slug/${this.projectId}/${formSlug}`;
+    let url = `/v1/form/id/${this.projectId}/${formSlug}`;
     let headers = {};
     if (query && query.revisionId) {
       headers = {
@@ -159,15 +162,19 @@ export class FormiumClient {
       };
     }
 
-    return this._fetcher(url, {
-      method: 'GET',
-      ...fetchOptions,
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-        ...fetchOptions?.headers,
-      },
-    }).then(res => res.json());
+    return this._fetcher(
+      url,
+      deepMerge(
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+        },
+        fetchOptions
+      )
+    ).then(res => res.json());
   }
 
   /**
@@ -190,15 +197,19 @@ export class FormiumClient {
         'X-Formik-Revision': query.revisionId,
       };
     }
-    return this._fetcher(url, {
-      method: 'GET',
-      ...fetchOptions,
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-        ...fetchOptions?.headers,
-      },
-    }).then(res => res.json());
+    return this._fetcher(
+      url,
+      deepMerge(
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            ...headers,
+          },
+        },
+        fetchOptions
+      )
+    ).then(res => res.json());
   }
 
   /**
