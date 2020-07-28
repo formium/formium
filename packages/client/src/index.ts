@@ -115,7 +115,7 @@ export class FormiumClient {
    * @public
    */
   findForms(
-    query: {
+    query?: {
       actionId?: string;
       from?: string;
       limit?: number;
