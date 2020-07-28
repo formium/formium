@@ -40,7 +40,7 @@ export function _createFetcher(
  */
 export interface Options {
   /** Base URL */
-  baseUrl: string;
+  baseUrl?: string;
   /** Custom fetch implementation (useful for mocking) */
   fetchImplementation?: any;
   /** API token */
