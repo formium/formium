@@ -153,10 +153,12 @@ export class FormiumClient {
   ): Promise<Form> {
     let url = `/v1/form/slug/${this.projectId}/${formSlug}`;
     let headers = {};
-    if (query && query.revisionId)
+    if (query && query.revisionId) {
       headers = {
         'X-Formik-Revision': query.revisionId,
       };
+    }
+
     return this._fetcher(url, {
       method: 'GET',
       ...fetchOptions,
@@ -183,10 +185,11 @@ export class FormiumClient {
   ): Promise<Form> {
     let url = `/v1/form/${id}`;
     let headers = {};
-    if (query && query.revisionId)
+    if (query && query.revisionId) {
       headers = {
         'X-Formik-Revision': query.revisionId,
       };
+    }
     return this._fetcher(url, {
       method: 'GET',
       ...fetchOptions,
