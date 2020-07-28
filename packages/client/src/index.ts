@@ -122,7 +122,7 @@ export class FormiumClient {
     },
     fetchOptions?: RequestInit
   ): Promise<{
-    data: Form;
+    data: Form[];
     next?: string;
   }> {
     let url =
