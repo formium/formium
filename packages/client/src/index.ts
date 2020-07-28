@@ -7,7 +7,7 @@
  */
 import { Form } from './types/Form';
 import qs from 'query-string';
-import { deepMerge } from '@formium/utils';
+import { deepMerge } from './deepMerge';
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
  *
