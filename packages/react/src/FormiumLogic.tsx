@@ -95,8 +95,7 @@ export const unstable_FormiumLogic = React.memo<{
     if (
       element.actions &&
       element.actions.length > 0 &&
-      element.actions.forEach &&
-      ((previous && valuesMap !== previous) || !previous)
+      element.actions.forEach
     ) {
       element.actions.forEach((item: FormElementAction) => {
         // Field-level actions
@@ -131,7 +130,7 @@ export const unstable_FormiumLogic = React.memo<{
         }
       });
     }
-  }, [valuesMap, setFieldProperty, previous]);
+  }, [valuesMap, setFieldProperty, previous, touched]);
   return null;
 });
 
