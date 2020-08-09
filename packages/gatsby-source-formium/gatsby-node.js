@@ -10,9 +10,13 @@ const digest = i =>
 
 exports.sourceNodes = async ({ actions, cache }, options = {}) => {
   const { createNode } = actions;
-  const { projectId, accessToken } = options;
+  const {
+    projectId,
+    accessToken,
+    baseUrl = 'https://api.formium.io',
+  } = options;
   const client = createClient(projectId, {
-    // baseUrl: "http://localhost:8080",
+    baseUrl,
     apiToken: accessToken,
     fetchImplementation: fetch,
   });
@@ -51,7 +55,7 @@ exports.sourceNodes = async ({ actions, cache }, options = {}) => {
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
   const typeDefs = `
-    type Form implements Node {
+    type FormiumForm implements Node {
       schema: JSON
     }
   `;

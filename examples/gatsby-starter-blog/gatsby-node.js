@@ -23,6 +23,14 @@ exports.createPages = async ({ graphql, actions }) => {
             }
           }
         }
+        allFormiumForm {
+          edges {
+            node {
+              id
+              slug
+            }
+          }
+        }
       }
     `
   )
@@ -45,6 +53,23 @@ exports.createPages = async ({ graphql, actions }) => {
         slug: post.node.fields.slug,
         previous,
         next,
+      },
+    })
+  })
+
+  // Create a page for each form
+  const forms = result.data.allFormiumForm.edges
+  // The template for your form pages
+  const formTemplate = path.resolve(__dirname, "src/templates/form.js")
+
+  // Create pages for each Form in Prismic using the template.
+  forms.forEach(form => {
+    createPage({
+      path: `/forms/${form.node.slug}`,
+      component: formTemplate,
+      context: {
+        id: form.node.id,
+        slug: form.node.slug,
       },
     })
   })

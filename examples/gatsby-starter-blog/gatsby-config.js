@@ -1,3 +1,7 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Starter Blog`,
@@ -26,23 +30,12 @@ module.exports = {
         name: `assets`,
       },
     },
-    // {
-    //   resolve: `gatsby-source-filesystem`,
-    //   options: {
-    //     name: `formium`,
-    //     path: `${__dirname}/.formium/`,
-    //     plugins: [`gatsby-transformer-json`],
-    //   },
-    // },
     {
-      // resolve: '@uptimeventures/gatsby-source-rss',
-      // this is our custom fork of @uptimeventures/gatsby-source-rss
-      // it extracts the embed URL out of the vanilla RSS feed.
       resolve: "gatsby-source-formium",
       options: {
-        projectId: "5babe593f0cc5715fd8bab5f",
-        apiToken:
-          "pa0X249Mctktovrnchb1j6LWyJNYIXG5e1AkpjZcasDkplWf9x8Y7E2re9y32m8D",
+        projectId: process.env.GATSBY_FORMIUM_PROJECT_ID,
+        accessToken: process.env.FORMIUM_ACCESS_TOKEN,
+        baseUrl: "http://localhost:8080",
       },
     },
     {

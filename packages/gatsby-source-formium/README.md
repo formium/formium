@@ -14,14 +14,14 @@ npm install --save gatsby-source-formium
 
 First, you need a way to pass environment variables to the build process, so secrets and other secured data aren’t committed to source control. We recommend using [`dotenv`](https://github.com/motdotla/dotenv) to expose environment variables safely. [Read more about dotenv and using environment variables here](https://gatsby.dev/env-vars). Then we can use these environment variables and configure our plugin.
 
-Once installed, and once you have `dotenv` setup. Add the plugin to your `gatsby-config` file.
+Once installed, and once you have `dotenv` setup. Add the plugin to your `gatsby-config.js` file.
 
 ```js
 // In your gatsby-config.js
 module.exports = {
   plugins: [
     {
-      resolve: `gatsby-source-contentful`,
+      resolve: `gatsby-source-formium`,
       options: {
         // Get your projectId from https://dashboard.formium.io
         projectId: `your_project_id`,
