@@ -1,13 +1,16 @@
 /**
  * Copyright (c) Formium, Inc. and its affiliates.
  *
- * This source code is licensed under the APACHE 2.0 license found in the
+ * This source code is licensed under the Business Source License license found in the
  * LICENSE file in the root directory of this source tree.
  *
  */
 import { Form } from './types/Form';
+import { User } from './types/User';
+import { Project } from './types/Project';
+import { APIError } from './errors';
 import qs from 'query-string';
-import { deepMerge } from './deepMerge';
+
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
  *
@@ -22,15 +25,53 @@ export function _createFetcher(
   apiToken?: string
 ) {
   return function fetcher(endpoint: string, options: RequestInit = {}) {
-    const opts = {
-      headers: {
-        'X-Formik-Client': '@formium/client',
-        'X-Formik-Client-Version': __VERSION__,
-        Authorization: `Bearer ${apiToken}`,
-      },
-    };
-    return fetchImplementation(baseUrl + endpoint, deepMerge(opts, options));
+    let opts = options;
+    opts.headers = options.headers || {};
+    (opts.headers as any)['X-Formik-Client'] = '@formium/client';
+    (opts.headers as any)['X-Formik-Client-Version'] = __VERSION__;
+    if (apiToken) {
+      (opts.headers as any).Authorization = `Bearer ${apiToken}`;
+    }
+
+    return fetchImplementation(baseUrl + endpoint, opts).then(res => {
+      if (res.ok) {
+        if (!res.headers.get('content-type')) {
+          return;
+        }
+        return res.headers.get('content-type')!.includes('application/json')
+          ? res.json()
+          : res;
+      }
+      const error = responseError(res);
+
+      throw error;
+    });
   };
+}
+
+async function responseError(
+  res: Response,
+  fallbackMessage = null,
+  parsedBody = {}
+) {
+  let bodyError;
+
+  if (!res.ok) {
+    let body;
+
+    try {
+      body = await res.json();
+    } catch (err) {
+      body = parsedBody;
+    }
+
+    // Some APIs wrongly return `err` instead of `error`
+    bodyError = body.error || body.err || body;
+  }
+
+  const msg = bodyError?.message || fallbackMessage || 'Response Error';
+
+  return new APIError(msg, res, bodyError);
 }
 
 /**
@@ -85,6 +126,32 @@ export interface SubmitSuccess {
 export type _Fetcher = ReturnType<typeof _createFetcher>;
 
 /**
+ * Results of paginated resource request
+ * @public
+ */
+export type Results<T> = {
+  /** List of results returned */
+  data: T[];
+  /** Identifier to return the next item in the sequence */
+  next?: string;
+};
+
+/**
+ * Paginated resource query
+ * @public
+ */
+export type PaginatedQuery<T> = T & {
+  /**
+   * Pagination cursor id
+   */
+  from?: string;
+  /**
+   * Number of results to return. Max is 100.
+   */
+  limit?: number;
+};
+
+/**
  * Formium Client
  *
  * @public
@@ -115,30 +182,105 @@ export class FormiumClient {
    * @public
    */
   findForms(
-    query?: {
+    query?: PaginatedQuery<{
+      /** With given action id */
       actionId?: string;
-      from?: string;
-      limit?: number;
-    },
+      /** Return forms that have been updated starting at this date */
+      updateStartAt?: string;
+    }>,
     fetchOptions?: RequestInit
-  ): Promise<{
-    data: Form[];
-    next?: string;
-  }> {
+  ): Promise<Results<Form>> {
     let url =
       `/v1/form?` + qs.stringify({ projectId: this.projectId, ...query });
-    return this._fetcher(
-      url,
-      deepMerge(
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-        fetchOptions
-      )
-    ).then(res => res.json());
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
+
+  /**
+   * Return the current user
+   *
+   * @public
+   */
+  getMe(fetchOptions?: RequestInit): Promise<User> {
+    let url = `/v1/user/me`;
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
+
+  /**
+   * Return a project by id
+   *
+   * @public
+   */
+  getProject(id: string, fetchOptions?: RequestInit): Promise<Project> {
+    let url = `/v1/project/` + id;
+
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
+
+  /**
+   * Retrieve the projects the user belongs to
+   *
+   * @public
+   */
+  getMyProjects(fetchOptions?: RequestInit): Promise<Results<Project>> {
+    let url = `/v1/project/me`;
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
+
+  /**
+   * Delete the current Oauth2 bearer token (for signout)
+   *
+   * @public
+   */
+  logout(fetchOptions?: RequestInit) {
+    let url = `/oauth/token/me`;
+    return this._fetcher(url, {
+      method: 'DELETE',
+      ...fetchOptions,
+    });
+  }
+
+  /**
+   * Return a project by slug
+   *
+   * @public
+   */
+  getProjectBySlug(
+    projectSlug: string,
+    fetchOptions?: RequestInit
+  ): Promise<Project> {
+    let url = `/v1/project/slug` + projectSlug;
+
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
   }
 
   /**
@@ -155,26 +297,19 @@ export class FormiumClient {
     fetchOptions?: RequestInit
   ): Promise<Form> {
     let url = `/v1/form/id/${this.projectId}/${formSlug}`;
-    let headers = {};
+    let options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
+
     if (query && query.revisionId) {
-      headers = {
-        'X-Formik-Revision': query.revisionId,
-      };
+      (options as any).headers['X-Formik-Revision'] = query.revisionId;
     }
 
-    return this._fetcher(
-      url,
-      deepMerge(
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            ...headers,
-          },
-        },
-        fetchOptions
-      )
-    ).then(res => res.json());
+    return this._fetcher(url, options);
   }
 
   /**
@@ -191,25 +326,19 @@ export class FormiumClient {
     fetchOptions?: RequestInit
   ): Promise<Form> {
     let url = `/v1/form/${id}`;
-    let headers = {};
+    let options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
+
     if (query && query.revisionId) {
-      headers = {
-        'X-Formik-Revision': query.revisionId,
-      };
+      (options as any).headers['X-Formik-Revision'] = query.revisionId;
     }
-    return this._fetcher(
-      url,
-      deepMerge(
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            ...headers,
-          },
-        },
-        fetchOptions
-      )
-    ).then(res => res.json());
+
+    return this._fetcher(url, options);
   }
 
   /**
@@ -246,7 +375,7 @@ export class FormiumClient {
         'Content-Type': 'application/json',
       },
       body: values,
-    }).then(res => res.json());
+    });
   }
 
   /**
@@ -290,3 +419,8 @@ export * from './types/FormElementAction';
 export * from './types/FormElementActionDetails';
 export * from './types/FormElementActionDetailsTo';
 export * from './types/FormSchema';
+export * from './types/User';
+export * from './types/Project';
+export * from './types/ProjectAccess';
+export * from './types/ProviderIdentity';
+export * from './types/CustomerAccess';

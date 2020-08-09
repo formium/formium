@@ -28,10 +28,11 @@
   },
   "devDependencies": {
     "@mdx-js/loader": "^1.6.5",
+    "@tailwindcss/typography": "^0.2.0",
     "babel-plugin-macros": "^2.8.0",
     "postcss-preset-env": "^6.7.0",
     "preval.macro": "^5.0.0",
-    "tailwindcss": "^1.4.6",
+    "tailwindcss": "^1.6.0",
     "title": "^3.4.2"
   }
 }

@@ -1,0 +1,56 @@
+{
+  "name": "@formium/cli",
+  "version": "0.0.20",
+  "description": "The Formium Command Line tool",
+  "author": "Jared Palmer <hello@formium.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formium/formium.git",
+    "directory": "packages/cli"
+  },
+  "scripts": {
+    "start": "tsdx watch  --format=cjs --tsconfig tsconfig.build.json --verbose --onSuccess \"node ./postbuild.js\"",
+    "build": "tsdx build --format=cjs --tsconfig  tsconfig.build.json && node ./postbuild.js",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "bin": {
+    "formium": "./dist/index.js"
+  },
+  "dependencies": {
+    "@formium/client": "^0.0.20",
+    "@zeit/fetch-retry": "5.0.0",
+    "ajv": "^6.12.3",
+    "ansi-escapes": "^4.3.1",
+    "asyncro": "^3.0.0",
+    "boxen": "^4.2.0",
+    "chalk": "^2.4.2",
+    "enquirer": "^2.3.4",
+    "fs-extra": "^8.0.1",
+    "just-index": "^2.1.0",
+    "just-pick": "^2.1.0",
+    "node-fetch": "2.6.0",
+    "ora": "^5.0.0",
+    "react-dev-utils": "^10.2.1",
+    "sade": "^1.4.2",
+    "tiny-glob": "^0.2.6",
+    "tslib": "^2.0.0",
+    "update-notifier": "^4.1.0",
+    "xdg-app-paths": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^8.0.0",
+    "@types/node": "^13.1.0",
+    "@types/sade": "^1.6.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
