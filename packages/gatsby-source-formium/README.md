@@ -24,7 +24,7 @@ module.exports = {
       resolve: `gatsby-source-formium`,
       options: {
         // Get your projectId from https://dashboard.formium.io
-        projectId: `your_project_id`,
+        projectId: process.env.GATSBY_FORMIUM_PROJECTID,
         // Generate a personal access token by going to https://dashboard.formium.io/account#tokens and put it into a .env file (learn more about Gatsby environment variables here: https://gatsby.dev/env-vars).
         accessToken: process.env.FORMIUM_ACCESS_TOKEN,
       },
@@ -83,7 +83,7 @@ To query for a **single** form with id of `5f2c1100a46ff8163a9b9f44`:
 
 ```graphql
 {
-  form(id: { eq: "5f2c1100a46ff8163a9b9f44" }) {
+  formiumForm(id: { eq: "5f2c1100a46ff8163a9b9f44" }) {
     id
     name
     slug
@@ -103,7 +103,7 @@ To query for a **single** form with slug of `contact-me`:
 
 ```graphql
 {
-  form(slug: { eq: "contact-me" }) {
+  formiumForm(slug: { eq: "contact-me" }) {
     id
     name
     slug
@@ -172,17 +172,19 @@ module.exports = {
     {
       resolve: `gatsby-source-formium`,
       options: {
-        projectId: `your_project_id`,
+        projectId: process.env.GATSBY_FORMIUM_PROJECTID,
         accessToken: process.env.FORMIUM_ACCESS_TOKEN,
       },
     },
     {
       resolve: `gatsby-source-formium`,
       options: {
-        projectId: `your_second_project_id`,
+        projectId: process.env.GATSBY_FORMIUM_SECOND_PROJECTID,
         accessToken: process.env.FORMIUM_ACCESS_TOKEN, // assuming you belong to both projects.
       },
     },
   ],
 };
 ```
+
+You'll also need to create a second Formium client.
