@@ -35,7 +35,6 @@ module.exports = {
       options: {
         projectId: process.env.GATSBY_FORMIUM_PROJECT_ID,
         accessToken: process.env.FORMIUM_ACCESS_TOKEN,
-        baseUrl: "http://localhost:8080",
       },
     },
     {
