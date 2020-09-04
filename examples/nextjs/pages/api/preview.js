@@ -1,23 +1,15 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { formium } from '../../lib/formium-client';
 
 export default async (req, res) => {
+  // Check the secret and next parameters
+  // This secret should only be known to this API route and the CMS
   if (!req.query.slug || !req.query.id) {
-    return res.status(401).json({ message: 'Invalid request' });
+    return res.status(401).json({ message: 'Invalid token' });
   }
 
-  // Fetch the form to check if the provided `id` exists
-  // If there is a revision, include it in the request
-  const url = `${process.env.REACT_APP_API_URL}/v1/form/${req.query.id}`;
-
-  const form = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.FORMIUM_TOKEN}`,
-      'X-Formik-Revision': req.query.revisionId,
-    },
-  })
-    .then(r => r.json())
-    .catch(e => console.log(e));
+  // Fetch the headless CMS to check if the provided `slug` exists
+  // getPostBySlug would implement the required fetching logic to the headless CMS
+  const form = await formium.getFormById(req.query.id);
 
   // If the slug doesn't exist prevent preview mode from being enabled
   if (!form) {
@@ -27,12 +19,12 @@ export default async (req, res) => {
   if (req.query.revisionId) {
     // Enable Preview Mode by setting the cookies
     res.setPreviewData({
-      'X-Formik-Revision': req.query.revisionId,
+      revisionId: req.query.revisionId,
     });
   }
 
   // Redirect to the path from the fetched post
   // We don't redirect to req.query.slug as that might lead to open redirect vulnerabilities
-  res.writeHead(307, { Location: '/forms/' + post.slug });
+  res.writeHead(307, { Location: '/f/' + form.slug });
   res.end();
 };

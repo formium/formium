@@ -8,10 +8,10 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.4.4",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "@formium/client": "latest",
     "@formium/react": "latest",
-    "@formium/client": "latest"
+    "next": "^9.5.3",
+    "react": "latest",
+    "react-dom": "latest"
   }
 }
