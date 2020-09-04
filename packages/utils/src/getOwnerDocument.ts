@@ -10,7 +10,8 @@ import { canUseDOM } from './canUseDOM';
  * Get an element's owner document. Useful when components are used in iframes
  * or other environments like dev tools.
  *
- * @param element
+ * @param element - An HTML element (defaults to document if usable)
+ * @public
  */
 export function getOwnerDocument<T extends HTMLElement = HTMLElement>(
   element: T | null

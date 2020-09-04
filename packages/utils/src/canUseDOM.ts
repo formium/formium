@@ -6,6 +6,7 @@
  */
 /**
  * Can use the DOM?
+ * @public
  */
 export function canUseDOM() {
   return (
