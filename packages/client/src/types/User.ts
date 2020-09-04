@@ -22,6 +22,11 @@ import { ProjectAccess } from './ProjectAccess';
 import { ProviderIdentity } from './ProviderIdentity';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 
+/**
+ * User
+ *
+ * @public
+ */
 export interface User {
   /**
    * globally unique id of user

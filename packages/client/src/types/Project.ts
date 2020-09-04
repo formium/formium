@@ -18,6 +18,12 @@
  */
 
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Project
+ *
+ * @public
+ */
 export interface Project {
   /**
    * unique id of project

@@ -18,6 +18,12 @@
 
 import { FormElement } from './FormElement';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Form schema
+ *
+ * @public
+ */
 export interface FormSchema {
   /**
    * page ids of the form

@@ -18,6 +18,11 @@
  */
 
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Customer access level of a user
+ * @public
+ */
 export interface CustomerAccess {
   customerId: string;
 

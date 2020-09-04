@@ -18,6 +18,12 @@
 
 import { FormElementActionDetailsTo } from './FormElementActionDetailsTo';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Form element action details
+ *
+ * @public
+ */
 export interface FormElementActionDetails {
   /**
    * Specifies where the Logic Jump leads---to another field, a Hidden Field, or thank you screen.

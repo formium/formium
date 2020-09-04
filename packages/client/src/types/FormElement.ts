@@ -18,6 +18,13 @@
 
 import { FormElementAction } from './FormElementAction';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Form element
+ *
+ * @public
+ */
+
 export interface FormElement {
   /**
    * unique identifier

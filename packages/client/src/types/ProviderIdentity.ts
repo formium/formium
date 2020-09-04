@@ -18,6 +18,12 @@
  */
 
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Provider identity
+ *
+ * @public
+ */
 export interface ProviderIdentity {
   /**
    * id of the project

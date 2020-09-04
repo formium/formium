@@ -18,6 +18,12 @@
  */
 
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Project access
+ *
+ * @public
+ */
 export interface ProjectAccess {
   /**
    * id of the project

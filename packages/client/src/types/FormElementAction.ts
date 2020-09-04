@@ -18,6 +18,12 @@
 
 import { FormElementActionDetails } from './FormElementActionDetails';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+
+/**
+ * Form element action
+ *
+ * @public
+ */
 export interface FormElementAction {
   /**
    * Action type
