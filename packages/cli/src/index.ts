@@ -5,29 +5,20 @@
  * This source code is licensed under the Business Source License found in the
  * LICENSE file in the root directory of this source tree.
  */
-import sade from 'sade';
-import glob from 'tiny-glob/sync';
-import { paths } from './utils/env/paths';
-import fs from 'fs-extra';
-import chalk from 'chalk';
-import { PackageJson } from './types';
-import os from 'os';
-import indexArray from 'just-index';
-const pkg = require('../package.json');
-import { Input, Select, MultiSelect } from 'enquirer';
-import {
-  createClient,
-  FormiumClient,
-  Project,
-  ProjectAccessAccess,
-  User,
-} from '@formium/client';
-import updateNotifier from 'update-notifier';
+import { createClient, FormiumClient, User } from '@formium/client';
 import AJV from 'ajv';
-import { createOutput } from './utils/output/createOutput';
-import { dir } from 'console';
+import chalk from 'chalk';
+import { Input, Select } from 'enquirer';
+import fs from 'fs-extra';
+import indexArray from 'just-index';
+import os from 'os';
+import sade from 'sade';
+import updateNotifier from 'update-notifier';
+import { paths } from './utils/env/paths';
 import { FormiumBuildError } from './utils/errors';
+import { createOutput } from './utils/output/createOutput';
 import { renderLink } from './utils/output/link';
+const pkg = require('../package.json');
 const prog = sade('formium');
 const fetch = require('@zeit/fetch-retry')(require('node-fetch'));
 const FORMIUM_DIR = '.formium';
@@ -60,7 +51,7 @@ async function getUser(
         output.log(
           '👉 ' +
             chalk.underline(
-              chalk.cyan(`https://dashboard.formium.io/account#tokens?ref=cli`)
+              chalk.cyan(`https://dashboard.formium.io/account#tokens`)
             )
         );
         const prompt = new Input({
