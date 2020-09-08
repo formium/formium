@@ -9,7 +9,8 @@
     "directory": "packages/client"
   },
   "scripts": {
-    "start": "tsdx watch --format=esm,cjs,umd --name Formium --tsconfig tsconfig.build.json  --verbose --noClean --onSuccess \"yalc push\"",
+    "start": "tsdx watch --format=esm,cjs,umd --name Formium --tsconfig tsconfig.build.json  --verbose --noClean --onSuccess \"npm run post-watch\"",
+    "post-watch": "api-extractor run | yalc push",
     "build": "tsdx build --format=esm,cjs,umd --name Formium --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",

@@ -1,0 +1,24 @@
+{
+  "mainEntryPointFilePath": "dist/index.d.ts",
+  "compiler": {
+    "tsconfigFilePath": "./tsconfig.build.json"
+  },
+  "apiReport": {
+    "enabled": true,
+    "reportFolder": "./temp/"
+  },
+  "docModel": {
+    "enabled": true,
+    "apiJsonFilePath": "./dist/<unscopedPackageName>.api.json"
+  },
+  "dtsRollup": {
+    "enabled": true
+  },
+  "messages": {
+    "tsdocMessageReporting": {
+      "tsdoc-undefined-tag": {
+        "logLevel": "none"
+      }
+    }
+  }
+}
