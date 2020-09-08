@@ -5,24 +5,33 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Form, FormElement, FormElementType } from '@formium/client';
+import { canUseDOM } from '@formium/utils';
+import {
+  Field, FieldConfig, Form as FormikForm,
+  FormikConfig,
+
+
+
+
+
+  FormikContext, FormikValues,
+
+  useField, useFormik,
+
+
+
+
+
+
+  useFormikContext
+} from 'formik';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {
-  useFormik,
-  Form as FormikForm,
-  FormikConfig,
-  FormikValues,
-  FieldConfig,
-  useField,
-  Field,
-  useFormikContext,
-  FormikContext,
-} from 'formik';
-import { unstable_FormiumLogic as FormiumLogic } from './FormiumLogic';
-import { FormElementType, FormElement, Form } from '@formium/client';
 import * as Yup from 'yup';
-import { useLocalStorage } from './utils/useLocalStorage';
+import { unstable_FormiumLogic as FormiumLogic } from './FormiumLogic';
 import { useIsomorphicLayoutEffect } from './utils/useIsomorphicLayoutEffect';
+import { useStorage } from './utils/useSessionStorage';
 
 function SubmitButton(props: any) {
   return <button type="submit" {...props} />;
@@ -52,9 +61,59 @@ function Header({
     </>
   );
 }
+
+type ComponentType =
+  | 'a'
+  | 'blockquote'
+  | 'code'
+  | 'delete'
+  | 'em'
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'h5'
+  | 'h6'
+  | 'hr'
+  | 'img'
+  | 'inlineCode'
+  | 'li'
+  | 'ol'
+  | 'p'
+  | 'pre'
+  | 'strong'
+  | 'sup'
+  | 'table'
+  | 'td'
+  | 'thematicBreak'
+  | 'tr'
+  | 'ul'
+  | 'b'
+  | 'u'
+  | 's'
+  | 'i'
+  | 'label'
+  | 'a'
+  | 'tbody'
+  | 'th'
+  | 'thead'
+  | 'tr';
+
+export type HtmlComponents = {
+  [key in ComponentType]?: React.ComponentType<{ children: React.ReactNode }>;
+};
+
 export interface FormiumFormConfig<V> {
-  formSlug: string;
+  /** Formium Form */
+  data: Form;
+  /** Initial values */
   initialValues?: V;
+  /** Submit callback */
+  onSubmit: (values: V) => Promise<void>;
+  /**
+   * Callback for triggering side effects when pages change
+   */
+  onChangePage?: (values: V, page: number) => void;
   components?: {
     ShortText: any;
     LongText: any;
@@ -67,36 +126,27 @@ export interface FormiumFormConfig<V> {
     Button: any;
     Header: any;
     PageWrapper: any;
-    ElementWrapper: any;
+    ElementsWrapper: any;
     FooterWrapper: any;
-    h1: (p: any) => any;
-    h2: (p: any) => any;
-    h3: (p: any) => any;
-    h4: (p: any) => any;
-    h5: (p: any) => any;
-    h6: (p: any) => any;
-    p: (p: any) => any;
-    b: (p: any) => any;
-    u: (p: any) => any;
-    s: (p: any) => any;
-    i: (p: any) => any;
-    em: (p: any) => React.ReactNode;
-    code: (p: any) => React.ReactNode;
-    strong: (p: any) => React.ReactNode;
-    pre: (p: any) => React.ReactNode;
-    label: (p: any) => React.ReactNode;
-    a: (p: any) => React.ReactNode;
-    ul: (p: any) => React.ReactNode;
-    ol: (p: any) => React.ReactNode;
-    li: (p: any) => React.ReactNode;
-    blockquote: (p: any) => React.ReactNode;
-    img: (p: any) => React.ReactNode;
-    table: (p: any) => React.ReactNode;
-    tbody: (p: any) => React.ReactNode;
-    td: (p: any) => React.ReactNode;
-    th: (p: any) => React.ReactNode;
-    thead: (p: any) => React.ReactNode;
-    tr: (p: any) => React.ReactNode;
+    FieldWrapper: any;
+    Label: any;
+    TextInput: any;
+    Description: any;
+  };
+}
+
+interface TextFieldProps {
+  label: string;
+  field: {
+    id: string;
+    name: string;
+    required?: boolean;
+    description?: string;
+    placeholder?: string;
+    value: string;
+    onChange: (e: React.BaseSyntheticEvent) => void;
+    onBlur: (e: React.BaseSyntheticEvent) => void;
+    onFocus: (e: React.BaseSyntheticEvent) => void;
   };
 }
 
@@ -283,9 +333,13 @@ export const defaultComponents = {
   SubmitButton,
   Button,
   Header,
-  ElementWrapper: ({ children }: any) => children,
+  Label: (props: JSX.IntrinsicElements['label']) => <label {...props} />,
+  Description: (props: JSX.IntrinsicElements['div']) => <div {...props} />,
+  TextInput: (props: JSX.IntrinsicElements['input']) => <input {...props} />,
+  ElementsWrapper: ({ children }: any) => children,
   PageWrapper: ({ children }: any) => children,
   FooterWrapper: ({ children }: any) => children,
+  FieldWrapper: (props: any) => <div {...props} />,
   h1: (props: JSX.IntrinsicElements['h1']) => <h1 {...props} />,
   h2: (props: JSX.IntrinsicElements['h2']) => <h2 {...props} />,
   h3: (props: JSX.IntrinsicElements['h3']) => <h3 {...props} />,
@@ -296,6 +350,7 @@ export const defaultComponents = {
   b: (props: JSX.IntrinsicElements['b']) => <b {...props} />,
   u: (props: JSX.IntrinsicElements['u']) => <u {...props} />,
   label: (props: JSX.IntrinsicElements['label']) => <label {...props} />,
+  input: (props: JSX.IntrinsicElements['input']) => <input {...props} />,
   s: (props: JSX.IntrinsicElements['s']) => <s {...props} />,
   i: (props: JSX.IntrinsicElements['i']) => <i {...props} />,
   em: (props: JSX.IntrinsicElements['em']) => <em {...props} />,
@@ -463,8 +518,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
   data: _data,
   components = defaultComponents,
   ...props
-}: Omit<FormikConfig<Values>, 'initialValues'> &
-  FormiumFormConfig<Values> & { formSlug?: string; data: Form }) {
+}: Omit<FormikConfig<Values>, 'initialValues'> & FormiumFormConfig<Values>) {
   const [form, setForm] = React.useState<Form>(_data);
   const children = denormalize(
     form?.schema?.pageIds ?? [],
@@ -494,6 +548,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
     <FormiumFormWizard
       components={components}
       initialValues={initialValues}
+      data={_data}
       {...props}
     >
       {children &&
@@ -505,7 +560,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
             )}
           >
             <components.Header form={form} page={page} pageIndex={pageIndex} />
-            <components.ElementWrapper>
+            <components.ElementsWrapper>
               {page.children &&
                 page.children.map((element: NestedField, index: number) => {
                   const {
@@ -524,7 +579,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                     return null;
                   }
                   return (
-                    <div key={id}>
+                    <components.FieldWrapper key={id}>
                       <FormiumLogic
                         form={form}
                         element={element}
@@ -599,15 +654,17 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                           />
                         </>
                       ) : null}
-                    </div>
+                    </components.FieldWrapper>
                   );
                 })}
-            </components.ElementWrapper>
+            </components.ElementsWrapper>
           </Page>
         ))}
     </FormiumFormWizard>
   );
 }
+const getFormPageStorageKey = (id: string) => `formium-${id}-form-page`;
+const getFormStateStorageKey = (id: string) => `formium-${id}-form-state`;
 
 export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
   initialValues,
@@ -618,12 +675,12 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
   ...props
 }: Omit<FormikConfig<Values>, 'initialValues'> &
   FormiumFormConfig<Values> & {
-    formSlug?: string;
-    data?: Form;
     debug?: boolean;
   }) {
-  const getId = (key: string) => `__${key}`;
-  const [page, setPage] = useLocalStorage(getId('page'), 0);
+  const { id } = props.data;
+  const pageStorageKey = React.useMemo(() => getFormPageStorageKey(id), [id]);
+  const stateStorageKey = React.useMemo(() => getFormStateStorageKey(id), [id]);
+  const [page, setPage] = useStorage(pageStorageKey, 0);
   const [values, setValues] = React.useState(initialValues || {});
   const next = React.useCallback(
     newValues => {
@@ -657,7 +714,10 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
       const isLastPage = page === React.Children.count(children) - 1;
 
       if (isLastPage) {
-        return onSubmit(currentValues, formikActions);
+        return onSubmit(currentValues).then(() => {
+          sessionStorage.removeItem(pageStorageKey);
+          sessionStorage.removeItem(stateStorageKey);
+        });
       } else {
         formikActions.setTouched({});
         next(currentValues);
@@ -684,27 +744,30 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
     initialValues: formikInitialValues,
   } = formik;
 
-  // React.useEffect(() => {
-  //   localStorage.setItem(
-  //     'formik',
-  //     JSON.stringify({
-  //       values: formikValues,
-  //       touched,
-  //       errors,
-  //       initialValues: formikInitialValues,
-  //     })
-  //   );
-  // }, [formikValues, touched, errors, formikInitialValues]);
+  React.useEffect(() => {
+    if (canUseDOM()) {
+      sessionStorage.setItem(
+        stateStorageKey,
+        JSON.stringify({
+          values: formikValues,
+          touched,
+          errors,
+          initialValues: formikInitialValues,
+        })
+      );
+    }
+  }, [formikValues, touched, errors, formikInitialValues, stateStorageKey]);
 
-  // useIsomorphicLayoutEffect(() => {
-  //   try {
-  //     const maybeF = localStorage.getItem('formik');
-  //     if (maybeF) {
-  //       const newState = JSON.parse(maybeF);
-  //       setFormikState(newState);
-  //     }
-  //   } catch (_error) {}
-  // }, [setFormikState]);
+  useIsomorphicLayoutEffect(() => {
+    try {
+      const maybeF = sessionStorage.getItem(stateStorageKey);
+      if (maybeF) {
+        const newState = JSON.parse(maybeF);
+        setFormikState(newState);
+      }
+    } catch (_error) {}
+  }, [setFormikState, stateStorageKey]);
+
   return (
     <FormikContext.Provider value={formik}>
       <FormikForm>

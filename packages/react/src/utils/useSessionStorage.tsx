@@ -19,7 +19,7 @@ type parserOptions<T> =
       deserializer: (value: string) => T;
     };
 
-export const useLocalStorage = <T,>(
+export const useStorage = <T,>(
   key: string,
   initialValue?: T,
   options?: parserOptions<T>
@@ -42,16 +42,16 @@ export const useLocalStorage = <T,>(
 
   const [state, setState] = useState<T>(() => {
     try {
-      const localStorageValue = localStorage.getItem(key);
-      if (localStorageValue !== null) {
-        return deserializer(localStorageValue);
+      const sessionStorageValue = sessionStorage.getItem(key);
+      if (sessionStorageValue !== null) {
+        return deserializer(sessionStorageValue);
       } else {
-        initialValue && localStorage.setItem(key, serializer(initialValue));
+        initialValue && sessionStorage.setItem(key, serializer(initialValue));
         return initialValue;
       }
     } catch {
       // If user is in private mode or has storage restriction
-      // localStorage can throw. JSON.parse and JSON.stringify
+      // sessionStorage can throw. JSON.parse and JSON.stringify
       // can throw, too.
       return initialValue;
     }
@@ -59,10 +59,10 @@ export const useLocalStorage = <T,>(
 
   useEffect(() => {
     try {
-      localStorage.setItem(key, serializer(state));
+      sessionStorage.setItem(key, serializer(state));
     } catch {
       // If user is in private mode or has storage restriction
-      // localStorage can throw. Also JSON.stringify can throw.
+      // sessionStorage can throw. Also JSON.stringify can throw.
     }
   }, [state]);
 
