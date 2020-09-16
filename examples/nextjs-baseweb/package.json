@@ -1,0 +1,20 @@
+{
+  "name": "nextjs-baseweb",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@formium/client": "^0.0.20",
+    "@formium/react": "^0.0.20",
+    "baseui": "^9.99.0",
+    "next": "9.5.3",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "styletron-engine-atomic": "^1.4.6",
+    "styletron-react": "^5.2.7"
+  }
+}

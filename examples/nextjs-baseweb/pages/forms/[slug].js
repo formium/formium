@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { FormiumForm, defaultComponents } from '@formium/react';
+import { FormiumForm } from '@formium/react';
 import { formium } from '../../lib/formium';
 import { useRouter } from 'next/router';
+import { FormiumBaseWebComponents } from '../../components/FormiumComponents';
 
 export default function FormPage(props) {
   const [success, setSuccess] = React.useState(false);
@@ -35,17 +36,7 @@ export default function FormPage(props) {
     <>
       <FormiumForm
         data={props.form}
-        components={{
-          ...defaultComponents,
-          PageWrapper: ({ children }) => <>{children}</>,
-          Header: ({ page }) => (
-            <header>
-              <h1 style={{ display: 'inline-flex', alignItems: 'center' }}>
-                {page.title}
-              </h1>
-            </header>
-          ),
-        }}
+        components={FormiumBaseWebComponents}
         onSubmit={async values => {
           if (props.preview) {
             setData(values);

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FormiumForm, defaultComponents } from '@formium/react';
 import { formium } from '../../lib/formium';
 import { useRouter } from 'next/router';
+import { FormiumMUI } from '../../components/FormiumComponents';
 
 export default function FormPage(props) {
   const [success, setSuccess] = React.useState(false);
@@ -37,7 +38,7 @@ export default function FormPage(props) {
         data={props.form}
         components={{
           ...defaultComponents,
-          PageWrapper: ({ children }) => <>{children}</>,
+          ...FormiumMUI,
           Header: ({ page }) => (
             <header>
               <h1 style={{ display: 'inline-flex', alignItems: 'center' }}>
