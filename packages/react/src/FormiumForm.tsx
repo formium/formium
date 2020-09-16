@@ -8,38 +8,38 @@
 import { Form, FormElement, FormElementType } from '@formium/client';
 import { canUseDOM } from '@formium/utils';
 import {
-  Field, FieldConfig, Form as FormikForm,
+  Field,
+  Form as FormikForm,
   FormikConfig,
-
-
-
-
-
-  FormikContext, FormikValues,
-
-  useField, useFormik,
-
-
-
-
-
-
-  useFormikContext
+  FormikContext,
+  FormikValues,
+  useFormik,
+  useFormikContext,
 } from 'formik';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as Yup from 'yup';
-import { unstable_FormiumLogic as FormiumLogic } from './FormiumLogic';
 import { useIsomorphicLayoutEffect } from './utils/useIsomorphicLayoutEffect';
+import { unstable_FormiumLogic as FormiumLogic } from './FormiumLogic';
+import {
+  Checkbox,
+  ControlProps,
+  Radio,
+  RadioGroupProps,
+  Textarea,
+  TextareaProps,
+  TextInput,
+  TextInputProps,
+} from './inputs';
 import { useStorage } from './utils/useSessionStorage';
 
-function SubmitButton(props: any) {
+const SubmitButton: React.FC<JSX.IntrinsicElements['button']> = props => {
   return <button type="submit" {...props} />;
-}
+};
 
-function Button(props: any) {
+const NextButton: React.FC<JSX.IntrinsicElements['button']> = props => {
   return <button type="button" {...props} />;
-}
+};
 
 function Header({
   page: page,
@@ -62,321 +62,131 @@ function Header({
   );
 }
 
-type ComponentType =
-  | 'a'
-  | 'blockquote'
-  | 'code'
-  | 'delete'
-  | 'em'
-  | 'h1'
-  | 'h2'
-  | 'h3'
-  | 'h4'
-  | 'h5'
-  | 'h6'
-  | 'hr'
-  | 'img'
-  | 'inlineCode'
-  | 'li'
-  | 'ol'
-  | 'p'
-  | 'pre'
-  | 'strong'
-  | 'sup'
-  | 'table'
-  | 'td'
-  | 'thematicBreak'
-  | 'tr'
-  | 'ul'
-  | 'b'
-  | 'u'
-  | 's'
-  | 'i'
-  | 'label'
-  | 'a'
-  | 'tbody'
-  | 'th'
-  | 'thead'
-  | 'tr';
-
-export type HtmlComponents = {
-  [key in ComponentType]?: React.ComponentType<{ children: React.ReactNode }>;
-};
-
-export interface FormiumFormConfig<V> {
-  /** Formium Form */
+/**
+ * Formium Form options
+ * @public
+ */
+export interface FormiumFormProps<V> {
+  /**
+   * A Formium Form (returned from an API Client)
+   */
   data: Form;
-  /** Initial values */
-  initialValues?: V;
-  /** Submit callback */
+  /**
+   * Submission callback handler. This function is called when the
+   * form is valid and a submission is attempted by pressing
+   * the submit button on the last page of the form.
+   */
   onSubmit: (values: V) => Promise<void>;
   /**
-   * Callback for triggering side effects when pages change
+   * Custom component overrides. When specified, these will be used
+   * instead of the default components for rendering respective inputs.
+   *
+   * @default defaultComponents
    */
-  onChangePage?: (values: V, page: number) => void;
-  components?: {
-    ShortText: any;
-    LongText: any;
-    Date: any;
-    Email: any;
-    Url: any;
-    MultipleChoice: any;
-    Checkboxes: any;
-    SubmitButton: any;
-    Button: any;
-    Header: any;
-    PageWrapper: any;
-    ElementsWrapper: any;
-    FooterWrapper: any;
-    FieldWrapper: any;
-    Label: any;
-    TextInput: any;
-    Description: any;
-  };
+  components?: FormiumComponents;
 }
 
-interface TextFieldProps {
-  label: string;
-  field: {
-    id: string;
-    name: string;
-    required?: boolean;
-    description?: string;
-    placeholder?: string;
-    value: string;
-    onChange: (e: React.BaseSyntheticEvent) => void;
-    onBlur: (e: React.BaseSyntheticEvent) => void;
-    onFocus: (e: React.BaseSyntheticEvent) => void;
-  };
+export interface FormiumComponents {
+  SubmitButton: React.ComponentType<JSX.IntrinsicElements['button']>;
+  PreviousButton: React.ComponentType<JSX.IntrinsicElements['button']>;
+  NextButton: React.ComponentType<JSX.IntrinsicElements['button']>;
+  Header: any;
+  PageWrapper: any;
+  ElementsWrapper: any;
+  FooterWrapper: any;
+  FieldWrapper: any;
+  FormControl: React.ComponentType<FormControlProps>;
+  TextInput: React.ComponentType<TextInputProps>;
+  Textarea: React.ComponentType<TextareaProps>;
+  Checkbox: React.ComponentType<ControlProps>;
+  Radio: React.ComponentType<ControlProps>;
+  RadioGroup?: React.ComponentType<RadioGroupProps>;
 }
 
-function TextField<V>({
-  required,
-  id,
+export interface FormControlProps {
+  /**
+   * Whether field should appear as non-interactive.
+   * Remember that `input` elements must be disabled separately.
+   */
+  disabled: boolean;
+
+  /**
+   * Whether field is required
+   */
+  required: boolean;
+
+  /**
+   * Label of this field.
+   */
+  label?: React.ReactNode;
+
+  /**
+   * `id` attribute of the field that this `FormControl` controls,
+   * used as `<label htmlFor>` attribute.
+   */
+  labelFor?: string;
+
+  /**
+   * Optional helper text.
+   */
+  description?: React.ReactNode;
+
+  /**
+   * Error message (if present) and the current field has been visited, otherwise this will be undefined.
+   */
+  error?: React.ReactNode;
+
+  /**
+   * React children. This is where actual field implementation will be rendered.
+   */
+  children?: React.ReactNode;
+}
+
+const FormControl = React.memo<FormControlProps>(function FormControl({
+  children,
+  description,
+  error,
   label,
-  ...props
-}: FieldConfig & { id: string; label: string; required?: boolean }) {
-  const [field, meta] = useField(props);
-  return (
-    <p>
-      <label htmlFor={id} style={{ display: 'block', fontWeight: 500 }}>
-        {label} {!required ? <small>(optional)</small> : null}
-      </label>
-      <input
-        {...field}
-        type="text"
-        placeholder="Type your answer here"
-        aria-describedby={`${id}-error`}
-      />
-      {!!meta.error && !!meta.touched ? (
-        <div id={`${id}-error`} data-error="true">
-          {meta.error}
-        </div>
-      ) : null}
-    </p>
-  );
-}
-
-function TextareaField<V>({
-  required,
-  ...props
-}: FieldConfig & { id: string; label: string; required?: boolean }) {
-  const [field, meta] = useField(props);
-  return (
-    <p>
-      <label htmlFor={props.id} style={{ display: 'block', fontWeight: 500 }}>
-        {props.label} {!required ? <small>(optional)</small> : null}
-      </label>
-      <textarea
-        {...field}
-        {...props}
-        style={{ display: 'block' }}
-        rows={5}
-        placeholder="Type your answer here"
-        aria-describedby={`${props.id}-error`}
-      />
-      {!!meta.error && !!meta.touched ? (
-        <div id={`${props.id}-error`}>{meta.error}</div>
-      ) : null}
-    </p>
-  );
-}
-
-function DateField<V>({
-  required,
-  ...props
-}: FieldConfig & {
-  id: string;
-  label: string;
-  required?: boolean;
-  min?: string;
-  max?: string;
+  labelFor,
 }) {
-  const [field, meta] = useField(props);
   return (
-    <p>
-      <label htmlFor={props.id}>
-        {props.label} {!required ? <small>(optional)</small> : null}
-      </label>
-      <input
-        {...field}
-        {...props}
-        type="date"
-        aria-describedby={`${props.id}-error`}
-      />
-      {!!meta.error && !!meta.touched ? (
-        <div id={`${props.id}-error`} data-error="true">
-          {meta.error}
-        </div>
-      ) : null}
-    </p>
-  );
-}
-
-const RadioGroupField = React.memo<
-  FieldConfig & {
-    label: string;
-    id: string;
-    name: string;
-    required?: boolean;
-    choices: Array<{ id: string; title: string }>;
-  }
->(({ label, id, name, choices, required, ...props }) => {
-  const [_, meta] = useField({ name });
-  return (
-    <p>
-      <div id={id} style={{ display: 'block', fontWeight: 500 }}>
-        {label} {!required ? <small>(optional)</small> : null}
-      </div>
-      <div>
-        {choices &&
-          choices.length > 0 &&
-          choices.map((c: any) => (
-            <div key={c.id}>
-              <Field
-                aria-describedby={`${id}-error`}
-                value={c.title}
-                type="radio"
-                name={name}
-                id={c.id}
-              />
-              <label htmlFor={c.id} style={{ marginLeft: '.25rem' }}>
-                {c.title}
-              </label>
-            </div>
-          ))}
-      </div>
-      {!!meta.error && !!meta.touched ? (
-        <div id={`${id}-error`} data-error="true">
-          {meta.error}
-        </div>
-      ) : null}
-    </p>
+    <div>
+      {label && <label htmlFor={labelFor}>{label}</label>}
+      {description && <div>{description}</div>}
+      {children}
+      {error && <div>{error}</div>}
+    </div>
   );
 });
 
-function CheckboxGroupField<V>({
-  label,
-  id,
-  name,
-  choices,
-  required,
-  ...props
-}: FieldConfig & {
-  label: string;
-  id: string;
-  required?: boolean;
-  name: string;
-  choices: Array<{ id: string; title: string }>;
-}) {
-  const formik = useFormikContext();
-  const meta = formik.getFieldMeta(name);
-  return (
-    <p>
-      <div id={id}>
-        {label} {!required ? <small>(optional)</small> : null}
-      </div>
-      <div role="group" aria-labelledby={id}>
-        {choices &&
-          choices.length > 0 &&
-          choices.map((c: any) => (
-            <div key={c.id}>
-              <Field
-                {...props}
-                role="checkbox"
-                value={c.title}
-                type="checkbox"
-                name={name}
-                id={c.id}
-              />
-              <label htmlFor={c.id}>{c.title}</label>
-            </div>
-          ))}
-      </div>
-      {!!meta.error && !!meta.touched ? (
-        <div id={`${id}-error`} data-error="true">
-          {meta.error}
-        </div>
-      ) : null}
-    </p>
-  );
-}
-
 export const defaultComponents = {
-  ShortText: TextField,
-  LongText: TextareaField,
-  Date: DateField,
-  Email: TextField,
-  Url: TextField,
-  MultipleChoice: RadioGroupField,
-  Checkboxes: CheckboxGroupField,
   SubmitButton,
-  Button,
+  NextButton,
+  PreviousButton: NextButton,
   Header,
-  Label: (props: JSX.IntrinsicElements['label']) => <label {...props} />,
-  Description: (props: JSX.IntrinsicElements['div']) => <div {...props} />,
-  TextInput: (props: JSX.IntrinsicElements['input']) => <input {...props} />,
   ElementsWrapper: ({ children }: any) => children,
   PageWrapper: ({ children }: any) => children,
   FooterWrapper: ({ children }: any) => children,
   FieldWrapper: (props: any) => <div {...props} />,
-  h1: (props: JSX.IntrinsicElements['h1']) => <h1 {...props} />,
-  h2: (props: JSX.IntrinsicElements['h2']) => <h2 {...props} />,
-  h3: (props: JSX.IntrinsicElements['h3']) => <h3 {...props} />,
-  h4: (props: JSX.IntrinsicElements['h4']) => <h4 {...props} />,
-  h5: (props: JSX.IntrinsicElements['h5']) => <h5 {...props} />,
-  h6: (props: JSX.IntrinsicElements['h6']) => <h6 {...props} />,
-  p: (props: JSX.IntrinsicElements['p']) => <p {...props} />,
-  b: (props: JSX.IntrinsicElements['b']) => <b {...props} />,
-  u: (props: JSX.IntrinsicElements['u']) => <u {...props} />,
-  label: (props: JSX.IntrinsicElements['label']) => <label {...props} />,
-  input: (props: JSX.IntrinsicElements['input']) => <input {...props} />,
-  s: (props: JSX.IntrinsicElements['s']) => <s {...props} />,
-  i: (props: JSX.IntrinsicElements['i']) => <i {...props} />,
-  em: (props: JSX.IntrinsicElements['em']) => <em {...props} />,
-  code: (props: JSX.IntrinsicElements['code']) => <code {...props} />,
-  strong: (props: JSX.IntrinsicElements['strong']) => <strong {...props} />,
-  pre: (props: JSX.IntrinsicElements['pre']) => <pre {...props} />,
-  a: (props: JSX.IntrinsicElements['a']) => <a {...props} />,
-  ul: (props: JSX.IntrinsicElements['ul']) => <ul {...props} />,
-  ol: (props: JSX.IntrinsicElements['ol']) => <ol {...props} />,
-  li: (props: JSX.IntrinsicElements['li']) => <li {...props} />,
-  blockquote: (props: JSX.IntrinsicElements['blockquote']) => (
-    <blockquote {...props} />
-  ),
-  img: (props: JSX.IntrinsicElements['img']) => <img {...props} />,
-  table: (props: JSX.IntrinsicElements['table']) => <table {...props} />,
-  tbody: (props: JSX.IntrinsicElements['tbody']) => <tbody {...props} />,
-  td: (props: JSX.IntrinsicElements['td']) => <td {...props} />,
-  th: (props: JSX.IntrinsicElements['th']) => <th {...props} />,
-  thead: (props: JSX.IntrinsicElements['thead']) => <thead {...props} />,
-  tr: (props: JSX.IntrinsicElements['tr']) => <tr {...props} />,
+  FormControl,
+  TextInput,
+  Textarea,
+  Radio,
+  Checkbox,
 };
 
 const Page: React.FC<any> = ({ children }) => children;
 
 Page.displayName = 'FormiumPage';
 
+/**
+ * Return the list of "input" elements from a form. This is every element
+ * except for Groups, Pages, and Choices.
+ *
+ * @param form A formium form
+ * @public
+ * @alpha
+ */
 export const getElementsFromForm = (form?: Form) => {
   if (!form) {
     return [];
@@ -393,6 +203,14 @@ export const getElementsFromForm = (form?: Form) => {
   );
 };
 
+/**
+ * Return a Yup object schema based on a list of form elements.
+ *
+ * @param inputElements - An array of expanded FormElements
+ * @returns A Yup schema
+ * @public
+ * @alpha
+ */
 export function getValidationSchema(inputElements?: FormElement[]) {
   return Yup.object(
     inputElements &&
@@ -488,8 +306,16 @@ export function getValidationSchema(inputElements?: FormElement[]) {
 
 type NestedField = FormElement & { children?: FormElement[] };
 
-export function getInitialValues<Values>(inputElements: NestedField[]) {
-  return inputElements.reduce((prev: any, curr: NestedField) => {
+/**
+ * Return initial values given an array of form elements (i.e. like on a page)
+ *
+ * @param inputElements - An array of expanded FormElements
+ * @typeParam Values - The shape of the values of your form (an object with keys matching those specified in the dashboard)
+ * @returns Initial values for the array of elements / page. This does not include values set by dynamic population.
+ * @public
+ */
+export function getInitialValues<Values>(inputElements: FormElement[]): Values {
+  return inputElements.reduce((prev: any, curr: FormElement) => {
     if (curr.type === FormElementType.CHECKBOX) {
       (prev as any)[curr.slug] = [];
     } else {
@@ -514,17 +340,31 @@ function denormalize(arr: string[], get: (id: string) => any): NestedField[] {
   );
 }
 
+const FormControlWrapper = React.memo<
+  {
+    component: FormiumComponents['FormControl'];
+    name: string;
+  } & FormControlProps
+>(({ component: Comp, name, ...props }) => {
+  const formik = useFormikContext();
+  const { error, touched } = formik.getFieldMeta(name);
+  return <Comp {...props} error={!!touched && !!error && error} />;
+});
+
+/**
+ * @public
+ */
 export function FormiumForm<Values extends FormikValues = FormikValues>({
   data: _data,
   components = defaultComponents,
   ...props
-}: Omit<FormikConfig<Values>, 'initialValues'> & FormiumFormConfig<Values>) {
+}: FormiumFormProps<Values>) {
   const [form, setForm] = React.useState<Form>(_data);
   const children = denormalize(
     form?.schema?.pageIds ?? [],
     (id: string) => form?.schema?.fields[id]
   );
-  const initialValues = getInitialValues(getElementsFromForm(form));
+  const initialValues: Values = getInitialValues(getElementsFromForm(form));
   const setFieldProperty = React.useCallback(
     (id: string, partial: Partial<FormElement>) => {
       setForm(f => ({
@@ -545,7 +385,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
   );
 
   return (
-    <FormiumFormWizard
+    <FormikWizard
       components={components}
       initialValues={initialValues}
       data={_data}
@@ -559,122 +399,212 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
               children![pageIndex].children!
             )}
           >
-            <components.Header form={form} page={page} pageIndex={pageIndex} />
-            <components.ElementsWrapper>
-              {page.children &&
-                page.children.map((element: NestedField, index: number) => {
-                  const {
-                    id,
-                    children,
-                    actions,
-                    items,
-                    hidden,
-                    required,
-                    requiredText,
-                    defaultValue,
-                    placeholder,
-                    ...item
-                  } = element;
-                  if (hidden) {
-                    return null;
-                  }
-                  return (
-                    <components.FieldWrapper key={id}>
-                      <FormiumLogic
-                        form={form}
-                        element={element}
-                        setFieldProperty={setFieldProperty}
-                      />
+            <components.PageWrapper>
+              <components.Header
+                form={form}
+                page={page}
+                pageIndex={pageIndex}
+              />
+              <components.ElementsWrapper>
+                {page.children &&
+                  page.children.map((element: NestedField, index: number) => {
+                    const {
+                      id,
+                      children,
+                      actions,
+                      items,
+                      hidden,
+                      required,
+                      requiredText,
+                      defaultValue,
+                      placeholder,
+                      ...item
+                    } = element;
+                    if (hidden) {
+                      return null;
+                    }
+                    return (
+                      <components.FieldWrapper key={id}>
+                        <FormiumLogic
+                          form={form}
+                          element={element}
+                          setFieldProperty={setFieldProperty}
+                        />
 
-                      {item.type === FormElementType.SHORT_TEXT ? (
-                        <components.ShortText
-                          label={item.title}
-                          name={item.slug}
-                          placeholder={placeholder}
-                          required={required}
-                          id={id}
-                          {...item}
-                        />
-                      ) : item.type === FormElementType.EMAIL ? (
-                        <components.Email
-                          label={item.title}
-                          name={item.slug}
-                          placeholder={placeholder}
-                          required={required}
-                          id={id}
-                          {...item}
-                        />
-                      ) : item.type === FormElementType.URL ? (
-                        <components.Url
-                          label={item.title}
-                          name={item.slug}
-                          placeholder={placeholder}
-                          required={required}
-                          id={id}
-                          {...item}
-                        />
-                      ) : item.type === FormElementType.RADIO ? (
-                        <components.MultipleChoice
-                          choices={children}
-                          label={item.title}
-                          name={item.slug}
-                          id={id}
-                          {...item}
-                        />
-                      ) : item.type === FormElementType.CHECKBOX ? (
-                        <>
-                          <components.Checkboxes
-                            choices={children}
-                            label={item.title}
+                        {item.type === FormElementType.SHORT_TEXT ? (
+                          <FormControlWrapper
+                            required={!!required}
+                            label={item.title!}
+                            labelFor={id}
                             name={item.slug}
-                            id={id}
-                            {...item}
-                          />
-                        </>
-                      ) : item.type === FormElementType.LONG_TEXT ? (
-                        <>
-                          <components.LongText
-                            label={item.title}
+                            description={item.description}
+                            component={components.FormControl}
+                            disabled={false}
+                          >
+                            <Field
+                              as={components.TextInput}
+                              name={item.slug}
+                              placeholder={placeholder}
+                              required={required}
+                              disabled={false}
+                              id={id}
+                              type="text"
+                            />
+                          </FormControlWrapper>
+                        ) : item.type === FormElementType.EMAIL ? (
+                          <FormControlWrapper
+                            required={!!required}
+                            label={item.title!}
+                            labelFor={id}
                             name={item.slug}
-                            placeholder={placeholder}
-                            required={required}
-                            id={id}
-                            {...item}
-                          />
-                        </>
-                      ) : item.type === FormElementType.DATE ? (
-                        <>
-                          <components.Date
-                            label={item.title}
+                            description={item.description}
+                            component={components.FormControl}
+                            disabled={false}
+                          >
+                            <Field
+                              as={components.TextInput}
+                              name={item.slug}
+                              placeholder={placeholder}
+                              required={required}
+                              id={id}
+                              type="email"
+                            />
+                          </FormControlWrapper>
+                        ) : item.type === FormElementType.URL ? (
+                          <FormControlWrapper
+                            required={!!required}
+                            label={item.title!}
+                            labelFor={id}
                             name={item.slug}
-                            placeholder={placeholder}
-                            required={required}
-                            id={id}
-                            {...item}
-                          />
-                        </>
-                      ) : null}
-                    </components.FieldWrapper>
-                  );
-                })}
-            </components.ElementsWrapper>
+                            description={item.description}
+                            component={components.FormControl}
+                            disabled={false}
+                          >
+                            <Field
+                              as={components.TextInput}
+                              name={item.slug}
+                              placeholder={placeholder}
+                              required={required}
+                              id={id}
+                              type="url"
+                            />
+                          </FormControlWrapper>
+                        ) : item.type === FormElementType.RADIO ? (
+                          <FormControlWrapper
+                            required={!!required}
+                            label={item.title!}
+                            labelFor={id}
+                            name={item.slug}
+                            description={item.description}
+                            component={components.FormControl}
+                            disabled={false}
+                          >
+                            {components.RadioGroup ? (
+                              <Field
+                                as={components.RadioGroup}
+                                id={id}
+                                name={item.slug}
+                                required={!!required}
+                                disabled={false}
+                                options={
+                                  children &&
+                                  children.length > 0 &&
+                                  children.map(c => ({
+                                    id: c.id,
+                                    disabled: false,
+                                    label: c.title,
+                                    value: c.title,
+                                  }))
+                                }
+                              />
+                            ) : (
+                              <>
+                                {children &&
+                                  children.length > 0 &&
+                                  children.map((c: any) => (
+                                    <div key={c.id}>
+                                      <Field
+                                        as={components.Radio}
+                                        value={c.title}
+                                        label={c.title}
+                                        type="radio"
+                                        name={item.slug}
+                                        id={c.id}
+                                      />
+                                    </div>
+                                  ))}
+                              </>
+                            )}
+                          </FormControlWrapper>
+                        ) : item.type === FormElementType.CHECKBOX ? (
+                          <>
+                            <FormControlWrapper
+                              required={!!required}
+                              label={item.title!}
+                              labelFor={id}
+                              name={item.slug}
+                              description={item.description}
+                              component={components.FormControl}
+                              disabled={false}
+                            >
+                              {children &&
+                                children.length > 0 &&
+                                children.map((c: any) => (
+                                  <div key={c.id}>
+                                    <Field
+                                      as={components.Checkbox}
+                                      role="checkbox"
+                                      value={c.title}
+                                      label={c.title}
+                                      type="checkbox"
+                                      name={item.slug}
+                                      id={c.id}
+                                    />
+                                  </div>
+                                ))}
+                            </FormControlWrapper>
+                          </>
+                        ) : item.type === FormElementType.LONG_TEXT ? (
+                          <FormControlWrapper
+                            required={!!required}
+                            label={item.title!}
+                            labelFor={id}
+                            name={item.slug}
+                            description={item.description}
+                            component={components.FormControl}
+                            disabled={false}
+                          >
+                            <Field
+                              as={components.Textarea}
+                              name={item.slug}
+                              placeholder={placeholder}
+                              required={required}
+                              id={id}
+                            />
+                          </FormControlWrapper>
+                        ) : null}
+                      </components.FieldWrapper>
+                    );
+                  })}
+              </components.ElementsWrapper>
+            </components.PageWrapper>
           </Page>
         ))}
-    </FormiumFormWizard>
+    </FormikWizard>
   );
 }
 const getFormPageStorageKey = (id: string) => `formium-${id}-form-page`;
 const getFormStateStorageKey = (id: string) => `formium-${id}-form-state`;
 
-export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
+function FormikWizard<Values extends FormikValues = FormikValues>({
   initialValues,
   children,
   onSubmit,
   components = defaultComponents,
   debug,
   ...props
-}: Omit<FormikConfig<Values>, 'initialValues'> &
-  FormiumFormConfig<Values> & {
+}: FormikConfig<Values> &
+  FormiumFormProps<Values> & {
     debug?: boolean;
   }) {
   const { id } = props.data;
@@ -776,17 +706,17 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
             {activePage}
             <components.FooterWrapper>
               {page > 0 && (
-                <components.Button type="button" onClick={previous}>
+                <components.PreviousButton type="button" onClick={previous}>
                   Back
-                </components.Button>
+                </components.PreviousButton>
               )}
               {!isLastPage && (
-                <components.SubmitButton
+                <components.NextButton
                   type="submit"
                   disabled={formik.isSubmitting}
                 >
                   Next
-                </components.SubmitButton>
+                </components.NextButton>
               )}
               {isLastPage && (
                 <components.SubmitButton
@@ -814,4 +744,4 @@ export function FormiumFormWizard<Values extends FormikValues = FormikValues>({
   );
 }
 
-FormiumFormWizard.displayName = 'FormiumFormWizard';
+FormikWizard.displayName = 'FormiumFormWizard';

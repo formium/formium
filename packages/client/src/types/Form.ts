@@ -10,113 +10,117 @@ import { FormSchema } from './FormSchema';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 
 /**
- * Form
+ * An interface for a Formium Form.
  *
  * @public
  */
 export interface Form {
   /**
-   * unique id of form
+   * unique id of formzzzxcvxzcv
    */
   id: string;
 
   /**
-   * customer that the form belongs to
+   * The Customer that the form belongs to
    */
   customerId: string;
 
   /**
-   * project that the form belongs to
+   * The Project that the form belongs to
    */
   projectId: string;
 
   /**
-   * project-unique name of the form
+   * The Project-unique name of the form
    */
   name: string;
 
   /**
-   * preview url of the form
+   * The Preview URL of the form. Used by the the dashboard
    */
   previewUrl: string;
 
   /**
-   * schema of the form
+   * The schema of the Form
    */
   schema?: FormSchema;
 
   /**
-   * project-unique slug of the form
+   * The Project-unique slug of the form
    */
   slug: string;
 
   /**
-   * keys that are allowed in the form submission
+   * The set of keys that are allowed in the form submission
    */
   keys: Array<FormKey>;
 
   /**
-   * keys that are allowed in the form submission
+   * The form submission layout in the dashboard.
    */
   submitLayout: FormSubmitLayout;
 
   /**
-   * types of uploads that are allowed (can be null if no uploads allowed)
+   * The types of uploads that are allowed (can be null if no uploads allowed)
    */
   uploadTypes?: Array<FormUploadTypes>;
 
   /**
-   * status
+   * The form's status
+   * @deprecated
    */
   status: FormStatus;
 
   /**
-   * validation settings
+   * Form validation settings.
+   * @deprecated
    */
   validate: FormValidate;
 
   /**
-   * list of actions that are sent to on submission
+   * The list of workflows that are sent to on submission
    */
   actionIds: Array<string>;
 
   /**
    * URL to redirect to on a successful form post
+   * @deprecated
    */
   redirectUrl?: string;
 
   /**
-   * total number of submits received
+   * The total number of submissions received
+   * 
    */
   submitCount: number;
 
   /**
-   * created timestamp
+   * The created timestamp
    */
   createAt: string;
 
   /**
-   * created by user id
+   * The created by user id
    */
   createId: string;
 
   /**
-   * updated timestamp
+   * The updated timestamp
    */
   updateAt: string;
 
   /**
-   * updated by user id
+   * The updated by user id
    */
   updateId: string;
 
   /**
-   * deleted timestamp
+   * The deleted timestamp
    */
   deleteAt?: string;
 
   /**
-   * deleted by user id
+   * The deleted by user id
    */
   deleteId?: string;
 }
@@ -164,7 +168,16 @@ export enum FormStatus {
  * @public
  */
 export enum FormValidate {
+  /**
+   * Allow any keys including unknown or new keys
+   */
   ANY = 'ANY',
+  /**
+   * Allow any _existing_ keys, but reject any new ones
+   */
   KEYS_ANY = 'KEYS_ANY',
+  /**
+   * Only allows new submissions with _all_ keys
+   */
   KEYS_ALL = 'KEYS_ALL',
 }
