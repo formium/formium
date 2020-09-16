@@ -8,6 +8,13 @@ import { rhythm, scale } from "../utils/typography"
 import { FormiumForm, defaultComponents } from "@formium/react"
 import formium from "../lib/formium"
 
+const TextInput =  props => (
+  <input style={{ border: "1px red #ddd" }} {...props} />
+)
+const formiumComponents = {
+  ...defaultComponents,
+  TextInput              
+}
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const formiumFormData = data.formiumForm
   const siteTitle = data.site.siteMetadata.title
@@ -15,16 +22,11 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
     <Layout location={location} title={siteTitle}>
       <SEO title={formiumFormData.name} />
       <FormiumForm
-        form={formiumFormData}
-        components={{
-          ...defaultComponents,
-          TextInput: props => (
-            <input style={{ border: "1px red solid" }} {...props} />
-          ),
-          Label: props => <label {...props} />,
-        }}
+        data={formiumFormData}
+        components={formiumComponents}
         onSubmit={async values => {
           await formium.submitForm(values)
+          alert("Success!")
         }}
       />
       <hr
