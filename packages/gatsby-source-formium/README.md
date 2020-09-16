@@ -1,8 +1,8 @@
 # gatsby-source-formium
 
-[![Stable release](https://img.shields.io/npm/v/@formium/gatsby-source-formium.svg)](https://npm.im/@formium/gatsby-source-formium)
+[![Stable release](https://img.shields.io/npm/v/gatsby-source-formium.svg)](https://npm.im/gatsby-source-formium)
 
-Source plugin for pulling forms into Gatsby from Formium projects. It outputs forms (and their schemas) so that they can be safely queried in Gatsby using GraphQL.
+Gatsby Source plugin for pulling forms into Gatsby from Formium projects. It outputs forms (and their schemas) so that they can be safely queried in Gatsby using GraphQL.
 
 ## Install
 
