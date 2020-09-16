@@ -1,0 +1,26 @@
+{
+  "name": "@formium/docs-data",
+  "version": "0.0.20",
+  "description": "Internal formium documentation data",
+  "author": "Jared Palmer <hello@formium.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/formium/formium.git",
+    "directory": "packages/docs-data"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "chokidar ./packages/react/src/* ./packages/client/src/* -c \"npm run generate:docs; echo 'updated docs data'; \"",
+    "build": "documentalist ../react/src/* ../client/src/* > ./data.json",
+    "prepublish": "npm run build",
+    "test": ""
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@documentalist/client": "^2.5.0",
+    "@documentalist/compiler": "^2.9.0",
+    "chokidar-cli": "^2.1.0"
+  }
+}
