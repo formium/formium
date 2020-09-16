@@ -2,8 +2,6 @@
   "name": "formium",
   "private": true,
   "devDependencies": {
-    "@microsoft/api-documenter": "^7.8.39",
-    "@microsoft/api-extractor": "^7.9.11",
     "@rollup/plugin-replace": "^2.3.3",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
@@ -23,21 +21,10 @@
     "dev": "lerna run start  --stream --parallel --scope=@formium/client",
     "test": "lerna run test --",
     "build": "lerna run build",
-    "docs": "npm run docs:extract",
-    "docs:extract": "lerna exec api-extractor run --scope=@formium/client ",
-    "docs:generate": "api-documenter markdown -i dist -o docs",
     "prepublish": "lerna run prepublish",
     "publish-canary": "lerna version prerelease --preid canary --force-publish && release --pre",
     "publish-stable": "lerna version --force-publish && release && node ./scripts/release-notes.js",
     "git-reset": "git reset --hard HEAD",
-    "git-clean": "git clean -d -x -e node_modules -e packages -f",
-    "now-build": "npm run build-website",
-    "start-website": "cd website && yarn start",
-    "build-website": "cd website && yarn install && yarn build"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "singleQuote": true,
-    "semi": true
+    "git-clean": "git clean -d -x -e node_modules -e packages -f"
   }
 }
