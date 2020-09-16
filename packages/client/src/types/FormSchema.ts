@@ -20,18 +20,18 @@ import { FormElement } from './FormElement';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 
 /**
- * Form schema
+ * The Form schema
  *
  * @public
  */
 export interface FormSchema {
   /**
-   * page ids of the form
+   * The list of page ids of the form.
    */
-  pageIds?: Array<string>;
+  pageIds?: string[];
 
   /**
-   * elements of the form
+   * The normalized elements of the form.
    */
   fields: { [key: string]: FormElement };
 }

@@ -20,7 +20,7 @@ import { FormElementAction } from './FormElementAction';
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 
 /**
- * Form element
+ * Form element interface. This is a polymorphic interface that is the union of all possible element options within a given schema.
  *
  * @public
  */
@@ -47,32 +47,32 @@ export interface FormElement {
   type: FormElementType;
 
   /**
-   * is the element required
+   * is the element required?
    */
   required?: boolean;
 
   /**
-   * is the element required
+   * Custom error text when empty, but required
    */
   requiredText?: string;
 
   /**
-   * is the element hidden (initially)
+   * Is the element hidden (initially)?
    */
   hidden?: boolean;
 
   /**
-   * Can the field be dynamically populated?
+   * Can the field be dynamically populated via URL query?
    */
   dynamic?: boolean;
 
   /**
-   * The name of the dynamic parameter
+   * The name of the dynamic parameter (URL query parameter)
    */
   dynamicParam?: string;
 
   /**
-   * The name of the dynamic parameter
+   * The input placeholder (if applicable)
    */
   placeholder?: string;
 
@@ -87,7 +87,7 @@ export interface FormElement {
   minLength?: number;
 
   /**
-   * Initial value of element
+   * Initial value of the element. Does not apply to choice elements.
    */
   defaultValue?: string;
 
@@ -102,27 +102,31 @@ export interface FormElement {
   maxLength?: number;
 
   /**
-   * element description
+   * The element description
    */
   description?: string;
 
   /**
    * should randomize options?
+   * @deprecated
    */
   randomize?: boolean;
 
   /**
-   * allow an other option in list
+   * Allow an other option in list. Only applies to choice or select options.
+   * @deprecated
    */
   allowOther?: boolean;
 
   /**
-   * list of items
+   * The list of child element ids belonging to this element. 
+   * For a page element, these would be ids of elements. For a 
+   * Radio field, these would be the list of choice ids.
    */
   items?: Array<string>;
 
   /**
-   * list of logic actions
+   * The list of logic actions for this element.
    */
   actions?: Array<FormElementAction>;
 

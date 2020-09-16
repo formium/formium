@@ -33,45 +33,27 @@ export function _createFetcher(
       (opts.headers as any).Authorization = `Bearer ${apiToken}`;
     }
 
-    return fetchImplementation(baseUrl + endpoint, opts).then(res => {
+    return fetchImplementation(baseUrl + endpoint, opts).then(async res => {
       if (res.ok) {
         if (!res.headers.get('content-type')) {
           return;
         }
         return res.headers.get('content-type')!.includes('application/json')
-          ? res.json()
+          ? await res.json()
           : res;
       }
-      const error = responseError(res);
 
-      throw error;
+      let bodyError;
+      let body = await res.json();
+
+      // Some APIs wrongly return `err` instead of `error`
+      bodyError = body.error || body.err || body;
+
+      const msg = bodyError?.message || 'Response Error';
+
+      return Promise.reject(new APIError(msg, res, bodyError));
     });
   };
-}
-
-async function responseError(
-  res: Response,
-  fallbackMessage = null,
-  parsedBody = {}
-) {
-  let bodyError;
-
-  if (!res.ok) {
-    let body;
-
-    try {
-      body = await res.json();
-    } catch (err) {
-      body = parsedBody;
-    }
-
-    // Some APIs wrongly return `err` instead of `error`
-    bodyError = body.error || body.err || body;
-  }
-
-  const msg = bodyError?.message || fallbackMessage || 'Response Error';
-
-  return new APIError(msg, res, bodyError);
 }
 
 /**
@@ -143,7 +125,7 @@ export type Results<T> = {
  * Paginated resource query
  * @public
  */
-export type PaginatedQuery<T> = T & {
+export interface PaginatedQuery {
   /**
    * Pagination cursor id
    */
@@ -152,7 +134,20 @@ export type PaginatedQuery<T> = T & {
    * Number of results to return. Max is 100.
    */
   limit?: number;
-};
+}
+/** @public */
+export interface FindFormsQuery extends PaginatedQuery {
+  /** With given action id */
+  actionId?: string;
+  /** Return forms that have been updated starting at this date */
+  updateStartAt?: string;
+}
+
+/** @public */
+export interface GetFormQuery {
+  /** The id of the revision */
+  revisionId?: string;
+}
 
 /**
  * Formium Client
@@ -160,263 +155,253 @@ export type PaginatedQuery<T> = T & {
  * @public
  */
 export class FormiumClient {
-         /** Project ID */
-         projectId: string;
-         /** API endpoint */
-         baseUrl: string;
-         /**  Internal HTTP client */
-         _fetcher: _Fetcher;
+  /** Project ID */
+  projectId: string;
+  /** API endpoint */
+  baseUrl: string;
+  /**  Internal HTTP client */
+  _fetcher: _Fetcher;
 
-         constructor(projectId: string, options?: Options) {
-           this.projectId = projectId;
-           this.baseUrl = options?.baseUrl ?? 'https://api.formium.io';
-           this._fetcher = _createFetcher(
-             this.baseUrl,
-             options?.fetchImplementation ?? fetch,
-             options?.apiToken
-           );
-         }
+  constructor(projectId: string, options?: Options) {
+    this.projectId = projectId;
+    this.baseUrl = options?.baseUrl ?? 'https://api.formium.io';
+    this._fetcher = _createFetcher(
+      this.baseUrl,
+      options?.fetchImplementation ?? fetch,
+      options?.apiToken
+    );
+  }
 
-         /**
-          * Return a forms in a project
-          *
-          * @param query - Query parameters
-          * @param fetchOptions - Additional request options
-          * @public
-          */
-         findForms(
-           query?: PaginatedQuery<{
-             /** With given action id */
-             actionId?: string;
-             /** Return forms that have been updated starting at this date */
-             updateStartAt?: string;
-           }>,
-           fetchOptions?: RequestInit
-         ): Promise<Results<Form>> {
-           let url =
-             `/v1/form?` +
-             qs.stringify({ projectId: this.projectId, ...query });
-           return this._fetcher(url, {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           });
-         }
+  /**
+   * Return forms in a project
+   *
+   * @param query - Query parameters
+   * @param fetchOptions - Additional request options
+   *
+   * @result A list of forms
+   * @public
+   */
+  findForms(
+    query?: FindFormsQuery,
+    fetchOptions?: RequestInit
+  ): Promise<Results<Form>> {
+    let url =
+      `/v1/form?` + qs.stringify({ projectId: this.projectId, ...query });
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
 
-         /**
-          * Return the current user
-          *
-          * @public
-          */
-         getMe(fetchOptions?: RequestInit): Promise<User> {
-           let url = `/v1/user/me`;
-           return this._fetcher(url, {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           });
-         }
+  /**
+   * Return the current user (based on the token)
+   *
+   * @public
+   */
+  getMe(fetchOptions?: RequestInit): Promise<User> {
+    let url = `/v1/user/me`;
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
 
-        /**
-         * Return a project by id
-         * 
-         * 
-         * This is a remark
-         * 
-         * @motion 
-         * 
-         * ```jsx
-         * client.getProjectById('your_project_id')
-         *   .then(project => {
-         *     console.log(project)
-         *    })
-         *   .catch(error => console.log(error))
-         * ```
-         * 
-         * @param id - Project Id
-         * @param fetchOptions - fetch overrides
-         * @public
-         */
-         getProject(id: string, fetchOptions?: RequestInit): Promise<Project> {
-           let url = `/v1/project/` + id;
+  /**
+   * Return a Project by id
+   *
+   *
+   * ```jsx
+   * client.getProjectById('your_project_id')
+   *   .then(project => {
+   *     console.log(project)
+   *    })
+   *   .catch(error => console.log(error))
+   * ```
+   *
+   * @param id - Project Id
+   * @param fetchOptions - fetch overrides
+   * @public
+   */
+  getProject(id: string, fetchOptions?: RequestInit): Promise<Project> {
+    let url = `/v1/project/` + id;
 
-           return this._fetcher(url, {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           });
-         }
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
 
-         /**
-          * Retrieve the projects the user belongs to
-          *
-          * @public
-          */
-         getMyProjects(fetchOptions?: RequestInit): Promise<Results<Project>> {
-           let url = `/v1/project/me`;
-           return this._fetcher(url, {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           });
-         }
+  /**
+   * Retrieve the projects the user belongs to
+   *
+   * @public
+   */
+  getMyProjects(fetchOptions?: RequestInit): Promise<Results<Project>> {
+    let url = `/v1/project/me`;
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
 
-         /**
-          * Delete the current Oauth2 bearer token (for signout)
-          *
-          * @public
-          */
-         logout(fetchOptions?: RequestInit) {
-           let url = `/oauth/token/me`;
-           return this._fetcher(url, {
-             method: 'DELETE',
-             ...fetchOptions,
-           });
-         }
+  /**
+   * Delete the current Oauth2 bearer token (for signout)
+   *
+   * @public
+   */
+  logout(fetchOptions?: RequestInit) {
+    let url = `/oauth/token/me`;
+    return this._fetcher(url, {
+      method: 'DELETE',
+      ...fetchOptions,
+    });
+  }
 
-         /**
-          * Return a project by slug
-          *
-          * @public
-          */
-         getProjectBySlug(
-           projectSlug: string,
-           fetchOptions?: RequestInit
-         ): Promise<Project> {
-           let url = `/v1/project/slug` + projectSlug;
+  /**
+   * Return a project by slug
+   *
+   * @public
+   */
+  getProjectBySlug(
+    projectSlug: string,
+    fetchOptions?: RequestInit
+  ): Promise<Project> {
+    let url = `/v1/project/slug` + projectSlug;
 
-           return this._fetcher(url, {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           });
-         }
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
 
-         /**
-          * Return a Form based on its slug and projectId
-          *
-          * @param formSlug - form slug
-          * @param query - Query parameters
-          * @param fetchOptions - Additional request options
-          * @public
-          */
-         getFormBySlug(
-           formSlug: string,
-           query?: { revisionId?: string },
-           fetchOptions?: RequestInit
-         ): Promise<Form> {
-           let url = `/v1/form/id/${this.projectId}/${formSlug}`;
-           let options = {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           };
+  /**
+   * Return a Form based on its slug and projectId
+   *
+   * @param formSlug - form slug
+   * @param query - Query parameters
+   * @param fetchOptions - Additional request options
+   * @public
+   */
+  getFormBySlug(
+    formSlug: string,
+    query?: GetFormQuery,
+    fetchOptions?: RequestInit
+  ): Promise<Form> {
+    let url = `/v1/form/id/${this.projectId}/${formSlug}`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
 
-           if (query && query.revisionId) {
-             (options as any).headers['X-Formik-Revision'] = query.revisionId;
-           }
+    if (query && query.revisionId) {
+      (options as any).headers['X-Formik-Revision'] = query.revisionId;
+    }
 
-           return this._fetcher(url, options);
-         }
+    return this._fetcher(url, options);
+  }
 
-         /**
-          * Return a Form given its ID
-          *
-          * @param formSlug - form slug
-          * @param query - Query parameters
-          * @param fetchOptions - Additional request options
-          * @public
-          */
-         getFormById(
-           id: string,
-           query?: { revisionId?: string },
-           fetchOptions?: RequestInit
-         ): Promise<Form> {
-           let url = `/v1/form/${id}`;
-           let options = {
-             method: 'GET',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             ...fetchOptions,
-           };
+  /**
+   * Return a Form given its ID
+   *
+   * @param formSlug - form slug
+   * @param query - Query parameters
+   * @param fetchOptions - Additional request options
+   * @returns A Formium Form entity
+   *
+   * @public
+   */
+  getFormById(
+    id: string,
+    query?: GetFormQuery,
+    fetchOptions?: RequestInit
+  ): Promise<Form> {
+    let url = `/v1/form/${id}`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
 
-           if (query && query.revisionId) {
-             (options as any).headers['X-Formik-Revision'] = query.revisionId;
-           }
+    if (query && query.revisionId) {
+      (options as any).headers['X-Formik-Revision'] = query.revisionId;
+    }
 
-           return this._fetcher(url, options);
-         }
+    return this._fetcher(url, options);
+  }
 
-         /**
-          * Submit data to Formium Form
-          *
-          * @param formSlug - Slug of the form
-          * @param data - An object or FormData instance containing submission data.
-          *
-          * @public
-          */
-         submitForm(formSlug: string, data: SubmitData) {
-           let values: string;
-           // Convert form data into object and handle arrays (i.e. select multiple)
-           if (data instanceof FormData) {
-             let obj: Record<string, any> = {};
-             for (const [key, value] of (data as FormData) as any) {
-               if (!obj.hasOwnProperty(key)) {
-                 obj[key] = value;
-                 continue;
-               }
-               if (!Array.isArray(obj[key])) {
-                 obj[key] = [obj[key]];
-               }
-               obj[key].push(value);
-             }
-             values = JSON.stringify(obj);
-           } else {
-             values = JSON.stringify(data);
-           }
+  /**
+   * Submit data to Formium Form
+   *
+   * @param formSlug - Slug of the form
+   * @param data - An object or FormData instance containing submission data.
+   *
+   * @public
+   */
+  submitForm(formSlug: string, data: SubmitData): Promise<void> {
+    let values: string;
+    // Convert form data into object and handle arrays (i.e. select multiple)
+    if (data instanceof FormData) {
+      let obj: Record<string, any> = {};
+      for (const [key, value] of (data as FormData) as any) {
+        if (!obj.hasOwnProperty(key)) {
+          obj[key] = value;
+          continue;
+        }
+        if (!Array.isArray(obj[key])) {
+          obj[key] = [obj[key]];
+        }
+        obj[key].push(value);
+      }
+      values = JSON.stringify(obj);
+    } else {
+      values = JSON.stringify(data);
+    }
 
-           return this._fetcher(`/submit/${this.projectId}/${formSlug}`, {
-             method: 'POST',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             body: values,
-           });
-         }
+    return this._fetcher(`/submit/${this.projectId}/${formSlug}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: values,
+    });
+  }
 
-         /**
-          * Upload a file to Formium. All uploads are private by default.
-          *
-          * @param formSlug - Slug of the Form
-          * @param file - File to be uploaded
-          *
-          * @returns URI of the uploaded file
-          */
-         uploadFile(formSlug: string, file: File): Promise<string | null> {
-           let data = new FormData();
-           data.append('file', file);
-           return this._fetcher(
-             `/submit/${this.projectId}/${formSlug}/upload`,
-             {
-               method: 'POST',
-               body: data,
-             }
-           ).then(res => res.headers.get('Location'));
-         }
-       }
+  /**
+   * Upload a file to Formium. All uploads are private by default.
+   *
+   * @param formSlug - Slug of the Form
+   * @param file - File to be uploaded
+   * @result URI of the uploaded file
+   */
+  uploadFile(formSlug: string, file: File): Promise<string | null> {
+    let data = new FormData();
+    data.append('file', file);
+    return this._fetcher(`/submit/${this.projectId}/${formSlug}/upload`, {
+      method: 'POST',
+      body: data,
+    }).then(res => res.headers.get('Location'));
+  }
+}
 
 /**
  * Create a new Formium API client
