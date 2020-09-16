@@ -4,6 +4,10 @@
 
 This is an **experimental** command line interface for Formium. It is not yet ready for production usage, yet. Its goal is to streamline development and deployment of sites using React frameworks _without_ static build steps / data fetching baked-in (i.e. you are not using Gatsby or Next.js).
 
+## Prerequisites
+
+This package requires an active [Formium](https://formium.io) account, project, and a form. You can sign up for free at https://dashboard.formium.io/signup. Free accounts allow for 100 monthly submissions, 10 active forms, and 100MB of total file storage.
+
 ## Installation
 
 ### On your local machine
