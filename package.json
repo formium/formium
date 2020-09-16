@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "lerna": "lerna",
-    "dev": "lerna run start  --stream --parallel --scope=@formium/client",
+    "dev": "lerna run start  --stream --parallel",
     "test": "lerna run test --",
     "build": "lerna run build",
     "prepublish": "lerna run prepublish",
