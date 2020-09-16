@@ -1,8 +1,9 @@
 # `@formium/client`
 
-The is the **browser** and **node** SDK for Formium, a new form storage and processing service. In a browser, this package allows you to send form submissions and upload files to your Formium Forms through the Formium REST API.
+[![Stable release](https://img.shields.io/npm/v/@formium/client.svg)](https://npm.im/@formium/client)
 
+The is the official **browser** and **Node.js** SDK for Formium.
 
-For details on how to use Formium, check out our [documentation](https://formium.io/docs). 
+For details on how to use Formium in your project, check out our [documentation](https://formium.io/docs). 
 
 
