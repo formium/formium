@@ -6,7 +6,7 @@ Formium is an **API-first, headless online form builder and automation tool** de
 
 ## Documentation
 
-For details on how to use Formium, check out our [documentation](https://formium.io/docs). 
+For details on how to use Formium, check out our [documentation](https://formium.io/docs).
 
 ---
 
