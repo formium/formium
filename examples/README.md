@@ -10,11 +10,11 @@ Formium is an **API-first, headless online form builder and automation tool** de
 
 ## What Does this Directory Contain?
 
-Each folder in this directory is an independent example of how to use Formium with various technologies and frameworks and component libraries. They can be run locally as well as be deployed to various hosting providers. To run the examples, you'll need to setup a `.env` file in each respective example. This step means that the examples, can't be instantly one-click deployed quite yet, but we'll be adding deploy buttons to streamline this process in the near future.
+Each folder in this directory is an independent example of how to use Formium with various technologies and frameworks and component libraries. They can be run locally as well as be deployed to various hosting providers. To run the examples, you'll need to setup a `.env` file in each respective example. This step means that the examples can't be instantly "one-click" deployed quite yet, but we'll be adding deploy buttons to streamline this process in the near future.
 
 ## License
 
-Please see the [License](https://github.com/formium/formium/blob/master/LICENSE) in the root of this directory.
+Please see the [BSL License](https://github.com/formium/formium/blob/master/LICENSE) in the root of this project.
 
 ## Get In Touch
 
