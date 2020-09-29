@@ -16,5 +16,5 @@ If you're interested in contributing to Formium, please review our [contributing
 
 ---
 
-License: [BSL](LICENSE)
-Code of Conduct: [the full text](/CODE_OF_CONDUCT.md)
+License: [BSL](LICENSE)  
+Code of Conduct: [Contributor Covenant](./.github/CODE_OF_CONDUCT.md)
