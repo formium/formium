@@ -8,6 +8,15 @@ Formium is an **API-first, headless online form builder and automation tool** de
 
 For details on how to use Formium, check out our [documentation](https://formium.io/docs).
 
+## Contributing 
+
+Please review our [contributing guide](./.github/CONTRIBUTING.md) for how to get started.
+
+## Code of Conduct
+
+Formium has adopted the [Contributor Covenant](https://www.contributor-covenant.org/) as its Code of Conduct, and we expect project participants to adhere to it.
+Please read [the full text](/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
+
 ---
 
 License: [BSL](LICENSE)
