@@ -1,7 +1,5 @@
 {
   "name": "with-typescript-eslint-jest",
-  "author": "@erikdstock",
-  "license": "MIT",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",

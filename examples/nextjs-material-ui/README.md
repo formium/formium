@@ -22,3 +22,12 @@ This example shows how you can customize Formium with Material UI components alo
 
 - [Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.
 - [Material UI](https://github.com/mui-org/material-ui) is a popular React component library
+
+## Learn More about Formium
+
+To learn more about Formium, take a look at the following resources:
+
+- [Formium Documentation](https://formium.io/docs) - learn about Formium features and API.
+- [Formium React](https://formium.io/docs/react) - learn about Formium React.
+
+You can check out [the Formium GitHub repository](https://github.com/formium/formium)

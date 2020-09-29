@@ -1,30 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js x Base Web x Formium example
 
-## Getting Started
+## How to use
 
-First, run the development server:
+Download the example [or clone the repo](https://github.com/formium/formium):
 
-```bash
-npm run dev
-# or
-yarn dev
+```sh
+curl https://codeload.github.com/formium/formium/tar.gz/master | tar -xz --strip=2  formium-master/examples/nextjs-baseweb
+cd nextjs-baseweb
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install it and run:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```sh
+npm install
+npm run dev
+```
 
-## Learn More
+## The idea behind the example
 
-To learn more about Next.js, take a look at the following resources:
+This example shows how you can customize Formium with Base Web components along with Next.js.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js](https://github.com/zeit/next.js) is a framework for server-rendered React apps.
+- [Base Web](https://github.com/uber/baseweb) is a popular React component library by Uber
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Learn More about Formium
 
-## Deploy on Vercel
+To learn more about Formium, take a look at the following resources:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Formium Documentation](https://formium.io/docs) - learn about Formium features and API.
+- [Formium React](https://formium.io/docs/react) - learn about Formium React.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You can check out [the Formium GitHub repository](https://github.com/formium/formium)
