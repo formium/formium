@@ -33,13 +33,17 @@
     "git-clean": "git clean -d -x -e node_modules -e packages -f",
     "start:app": "yarn build && yarn --cwd node_modules/react link && yarn --cwd packages/react link && yarn --cwd ./e2e link react @formium/react && yarn --cwd ./e2e && yarn --cwd ./e2e run dev",
     "cypress:open": "cypress open",
-    "cypress": "cypress run"    
+    "cypress": "cypress run"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "lint-staged": {
-    "**/*.{ts,tsx,md,mdx,js,jsx}": [
-      "npm run format",
+    "*.@(ts|tsx)": [
       "tsdx lint",
-      "git add"
+      "yarn format"
     ]
   }
 }
