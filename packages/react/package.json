@@ -9,8 +9,7 @@
     "directory": "packages/react"
   },
   "scripts": {
-    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose  --verbose --noClean --onSuccess \"npm run post-watch\"",
-    "post-watch": "yalc push",
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose  --verbose --noClean",
     "build": "tsdx build --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
@@ -24,8 +23,7 @@
     "dist"
   ],
   "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react": "^16.8.0"    
   },
   "dependencies": {
     "@formium/client": "^0.0.20",
@@ -36,7 +34,9 @@
     "yup": "^0.28.1"
   },
   "devDependencies": {
-    "@types/yup": "^0.26.32"
+    "@types/yup": "^0.26.32",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "publishConfig": {
     "access": "public"

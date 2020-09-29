@@ -8,9 +8,9 @@ You can sign up for free at https://dashboard.formium.io/signup. Free accounts a
 
 ## Documentation
 
-For details on how to use Formium, check out our [documentation](https://formium.io/docs). 
+For details on how to use Formium, check out our [documentation](https://formium.io/docs).
 
-## Contributing 
+## Contributing
 
 If you're interested in contributing to Formium, please review our [contributing guide](./.github/CONTRIBUTING.md) for how to get started.
 

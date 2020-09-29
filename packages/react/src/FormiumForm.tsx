@@ -17,7 +17,6 @@ import {
   useFormikContext,
 } from 'formik';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import * as Yup from 'yup';
 import { useIsomorphicLayoutEffect } from './utils/useIsomorphicLayoutEffect';
 import { unstable_FormiumLogic as FormiumLogic } from './FormiumLogic';
@@ -41,13 +40,7 @@ const NextButton: React.FC<JSX.IntrinsicElements['button']> = props => {
   return <button type="button" {...props} />;
 };
 
-function Header({
-  page: page,
-  pageIndex: pageIndex,
-}: {
-  page: FormElement;
-  pageIndex: number;
-}) {
+function Header({ page, pageIndex }: { page: FormElement; pageIndex: number }) {
   return (
     <>
       {page.title ? (
@@ -159,7 +152,7 @@ const FormControl = React.memo<FormControlProps>(function FormControl({
   );
 });
 
-export const defaultComponents = {
+export const defaultComponents: FormiumComponents = {
   SubmitButton,
   NextButton,
   PreviousButton: NextButton,
@@ -615,12 +608,10 @@ function FormikWizard<Values extends FormikValues = FormikValues>({
   const next = React.useCallback(
     newValues => {
       if (children) {
-        ReactDOM.unstable_batchedUpdates(() => {
-          setPage(p =>
-            Math.min(p + 1, React.Children.toArray(children).length - 1)
-          );
-          setValues(newValues);
-        });
+        setPage(p =>
+          Math.min(p + 1, React.Children.toArray(children).length - 1)
+        );
+        setValues(newValues);
       }
     },
     [setPage, setValues, children]
@@ -654,7 +645,7 @@ function FormikWizard<Values extends FormikValues = FormikValues>({
         return;
       }
     },
-    [onSubmit, children, next, page]
+    [page, children, onSubmit, pageStorageKey, stateStorageKey, next]
   );
   const activePage = React.Children.toArray(children)[page];
   const isLastPage = page === React.Children.count(children) - 1;
