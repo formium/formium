@@ -3,10 +3,6 @@
   "private": true,
   "description": "A starter for a blog powered by Gatsby and Markdown",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
-  },
   "dependencies": {
     "@formium/client": "^0.0.20",
     "@formium/react": "^0.0.20",
@@ -42,16 +38,6 @@
   },
   "devDependencies": {
     "prettier": "2.0.5"
-  },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
-  "keywords": [
-    "gatsby"
-  ],
-  "license": "0BSD",
-  "main": "n/a",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
   },
   "scripts": {
     "build": "gatsby build",

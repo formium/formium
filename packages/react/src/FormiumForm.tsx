@@ -33,11 +33,11 @@ import {
 } from './inputs';
 import { useStorage } from './utils/useSessionStorage';
 
-const SubmitButton: React.FC<JSX.IntrinsicElements['button']> = (props) => {
+const SubmitButton: React.FC<JSX.IntrinsicElements['button']> = props => {
   return <button type="submit" {...props} />;
 };
 
-const NextButton: React.FC<JSX.IntrinsicElements['button']> = (props) => {
+const NextButton: React.FC<JSX.IntrinsicElements['button']> = props => {
   return <button type="button" {...props} />;
 };
 
@@ -196,7 +196,7 @@ export const getElementsFromForm = (form?: Form) => {
   }
 
   return Object.values(form.schema.fields).filter(
-    (i) =>
+    i =>
       i.type !== FormElementType.GROUP &&
       i.type !== FormElementType.PAGE &&
       i.type !== FormElementType.CHOICE
@@ -328,7 +328,7 @@ export function getInitialValues<Values>(inputElements: FormElement[]): Values {
 function denormalize(arr: string[], get: (id: string) => any): NestedField[] {
   return (
     arr &&
-    arr.map((id) => {
+    arr.map(id => {
       const el = get(id);
       return {
         ...el,
@@ -367,7 +367,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
   const initialValues: Values = getInitialValues(getElementsFromForm(form));
   const setFieldProperty = React.useCallback(
     (id: string, partial: Partial<FormElement>) => {
-      setForm((f) => ({
+      setForm(f => ({
         ...f,
         schema: {
           ...(f.schema ?? {}),
@@ -509,7 +509,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                                 options={
                                   children &&
                                   children.length > 0 &&
-                                  children.map((c) => ({
+                                  children.map(c => ({
                                     id: c.id,
                                     disabled: false,
                                     label: c.title,
@@ -613,10 +613,10 @@ function FormikWizard<Values extends FormikValues = FormikValues>({
   const [page, setPage] = useStorage(pageStorageKey, 0);
   const [values, setValues] = React.useState(initialValues || {});
   const next = React.useCallback(
-    (newValues) => {
+    newValues => {
       if (children) {
         ReactDOM.unstable_batchedUpdates(() => {
-          setPage((p) =>
+          setPage(p =>
             Math.min(p + 1, React.Children.toArray(children).length - 1)
           );
           setValues(newValues);
@@ -626,11 +626,11 @@ function FormikWizard<Values extends FormikValues = FormikValues>({
     [setPage, setValues, children]
   );
   const previous = React.useCallback(() => {
-    setPage((p) => Math.max(p - 1, 0));
+    setPage(p => Math.max(p - 1, 0));
   }, [setPage]);
 
   const validationSchema = React.useCallback(
-    (v) => {
+    v => {
       const activePage: any = React.Children.toArray(children)[page];
       return activePage.props.validationSchema
         ? activePage.props.validationSchema

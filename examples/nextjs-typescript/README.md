@@ -1,27 +1,35 @@
-# NextJS Typescript Boilerplate
+# Next.js x Formium Typescript Boilerplate
 
-Bootstrap a developer-friendly NextJS app configured with:
+## How to use
 
+Download the example [or clone the repo](https://github.com/formium/formium):
+
+```sh
+curl https://codeload.github.com/formium/formium/tar.gz/master | tar -xz --strip=2  formium-master/examples/nexjs-typescript
+cd nexjs-typescript
+```
+
+Install it and run:
+
+```sh
+npm install
+npm run dev
+```
+
+This will bootstrap a developer-friendly Next.js app configured with:
+
+- [Formium](https://formium.io) forms
 - [Typescript](https://www.typescriptlang.org/)
 - Linting with [ESLint](https://eslint.org/)
 - Formatting with [Prettier](https://prettier.io/)
 - Linting, typechecking and formatting on by default using [`husky`](https://github.com/typicode/husky) for commit hooks
 - Testing with [Jest](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro)
 
-## Deploy your own
+## Learn More about Formium
 
-Deploy the example using [Vercel](https://vercel.com):
+To learn more about Formium, take a look at the following resources:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/vercel/next.js/tree/canary/examples/with-typescript-eslint-jest)
+- [Formium Documentation](https://formium.io/docs) - learn about Formium features and API.
+- [Formium React](https://formium.io/docs/react) - learn about Formium React.
 
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-typescript-eslint-jest with-typescript-eslint-jest-app
-# or
-yarn create next-app --example with-typescript-eslint-jest with-typescript-eslint-jest-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/import?filter=next.js&utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+You can check out [the Formium GitHub repository](https://github.com/formium/formium)
