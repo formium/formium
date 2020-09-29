@@ -119,8 +119,8 @@ export interface FormElement {
   allowOther?: boolean;
 
   /**
-   * The list of child element ids belonging to this element. 
-   * For a page element, these would be ids of elements. For a 
+   * The list of child element ids belonging to this element.
+   * For a page element, these would be ids of elements. For a
    * Radio field, these would be the list of choice ids.
    */
   items?: Array<string>;

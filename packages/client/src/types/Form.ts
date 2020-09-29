@@ -90,7 +90,7 @@ export interface Form {
 
   /**
    * The total number of submissions received
-   * 
+   *
    */
   submitCount: number;
 

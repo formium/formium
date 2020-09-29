@@ -8,12 +8,12 @@ import { rhythm, scale } from "../utils/typography"
 import { FormiumForm, defaultComponents } from "@formium/react"
 import formium from "../lib/formium"
 
-const TextInput =  props => (
+const TextInput = props => (
   <input style={{ border: "1px red #ddd" }} {...props} />
 )
 const formiumComponents = {
   ...defaultComponents,
-  TextInput              
+  TextInput,
 }
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const formiumFormData = data.formiumForm
