@@ -4,6 +4,7 @@
   "devDependencies": {
     "@github-docs/data-directory": "^1.2.0",
     "@rollup/plugin-replace": "^2.3.3",
+    "@types/jest": "^26.0.14",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "got": "10.0.4",
@@ -13,12 +14,11 @@
     "prettier": "^2.1.2",
     "husky": "^4.3.0",
     "tsdx": "^0.13.2",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "cypress": "^5.2.0"
   },
   "workspaces": [
-    "packages/*",
-    ".yalc/*",
-    ".yalc/@*/*"
+    "packages/*"
   ],
   "scripts": {
     "lerna": "lerna",
@@ -26,11 +26,15 @@
     "test": "lerna run test --",
     "build": "lerna run build",
     "prepublish": "lerna run prepublish",
-    "format": "prettier --write 'examples/*/src/**/*' 'packages/*/src/**/*' 'docs/src/**/*.{ts,tsx,js,jsx,md,mdx}' 'app/pages/**/*'  'packages/*/test/**/*' 'README.md'",
+    "format": "prettier --write 'examples/*/src/**/*' 'packages/*/src/**/*' 'cypress/**/*.ts' 'e2e/pages/**/*.tsx'  'packages/*/test/**/*' 'README.md'",
     "publish-canary": "lerna version prerelease --preid canary --force-publish && release --pre",
     "publish-stable": "lerna version --force-publish && release && node ./scripts/release-notes.js",
     "git-reset": "git reset --hard HEAD",
-    "git-clean": "git clean -d -x -e node_modules -e packages -f"
+    "git-clean": "git clean -d -x -e node_modules -e packages -f",
+    "start:app": "yarn build && yarn --cwd node_modules/react link && yarn --cwd ./e2e link react @formium/react && yarn --cwd ./e2e && yarn --cwd ./e2e run dev",
+    "cypress:open": "cypress open",
+    "cypress": "cypress run"
+    
   },
   "lint-staged": {
     "**/*.{ts,tsx,md,mdx,js,jsx}": [

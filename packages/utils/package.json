@@ -9,7 +9,7 @@
     "directory": "packages/utils"
   },
   "scripts": {
-    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --onSuccess \"yalc push\"",
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose",
     "build": "tsdx build --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
