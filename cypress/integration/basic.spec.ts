@@ -23,11 +23,11 @@ describe('basic validation', () => {
     cy.get('button[type=submit]').click();
 
     cy.get('[data-result]').contains(`{
-      "whatCouldBeBetter": "Moar fields!",
-      "email": "hello@formium.io",
-      "name": "",
-      "yourGithubProfile": ""
-    }`);
+  "whatCouldBeBetter": "Moar fields!",
+  "email": "hello@formium.io",
+  "name": "",
+  "yourGithubProfile": ""
+}`);
     cy.get('#renderCounter').contains('2');
   });
 });
