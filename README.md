@@ -10,6 +10,10 @@ You can sign up for free at https://dashboard.formium.io/signup. No credit cards
 
 For details on how to use Formium, check out our [documentation](https://formium.io/docs).
 
+## Code Samples & Quickstarts
+
+To see some samples of how to integrate Formium with your React app or website, check out the [examples folder](./examples).
+
 ## Contributing
 
 If you're interested in contributing to Formium, please review our [contributing guide](./.github/CONTRIBUTING.md) for how to get started.
