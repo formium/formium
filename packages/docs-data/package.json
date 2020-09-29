@@ -8,9 +8,13 @@
     "url": "git+https://github.com/formium/formium.git",
     "directory": "packages/docs-data"
   },
+  "files": [
+    "index.js",
+    "data.json"
+  ],
   "main": "index.js",
   "scripts": {
-    "start": "chokidar ./packages/react/src/* ./packages/client/src/* -c \"npm run generate:docs; echo 'updated docs data'; \"",
+    "start": "chokidar ../react/src/* ../client/src/* -c \"npm run build; echo 'updated docs data'; yalc push; \"",
     "build": "documentalist ../react/src/* ../client/src/* > ./data.json",
     "prepublish": "npm run build",
     "test": ""
