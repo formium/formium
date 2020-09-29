@@ -5,7 +5,7 @@ describe('basic validation', () => {
     cy.visit('http://localhost:3000');
 
     // Validate on blur
-    cy.get('textarea[name="whatCouldBeBetter"]').type('Foo').clear();
+    cy.get('textarea[name="whatCouldBeBetter"]').type('Foo').clear().blur();
     cy.get('textarea[name="whatCouldBeBetter"] + div').contains(
       'This question requires an answer.'
     );
