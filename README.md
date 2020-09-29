@@ -8,7 +8,7 @@ You can sign up for free at https://dashboard.formium.io/signup. Free accounts a
 
 ## Documentation
 
-For details on how to use Formium, check out our [documentation](https://formium.io/docs). ## Prerequisites
+For details on how to use Formium, check out our [documentation](https://formium.io/docs). 
 
 ## Contributing 
 
