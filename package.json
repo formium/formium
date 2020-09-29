@@ -41,7 +41,7 @@
     }
   },
   "lint-staged": {
-    "*.@(ts|tsx)": [
+    "*.@(ts|tsx|md|mdx|js|jsx)": [
       "tsdx lint",
       "yarn format"
     ]
