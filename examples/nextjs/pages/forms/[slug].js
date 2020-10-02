@@ -50,7 +50,7 @@ export default function FormPage(props) {
           if (props.preview) {
             setData(values);
           } else {
-            await formium.submitForm(router.query.slug, values);
+            await formium.submitForm(form.slug, values);
           }
           setSuccess(true);
         }}
