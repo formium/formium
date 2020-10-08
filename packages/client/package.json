@@ -1,6 +1,6 @@
 {
   "name": "@formium/client",
-  "version": "0.0.20",
+  "version": "0.1.0",
   "description": "Autogenerate IDs to facilitate WAI-ARIA and server rendering.",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
@@ -9,7 +9,7 @@
     "directory": "packages/client"
   },
   "scripts": {
-    "start": "tsdx watch --format=esm,cjs --name Formium --tsconfig tsconfig.build.json  --verbose --noClean",   
+    "start": "tsdx watch --format=esm,cjs --name Formium --tsconfig tsconfig.build.json  --verbose --noClean",
     "build": "tsdx build --format=esm,cjs --name Formium --tsconfig tsconfig.build.json",
     "test": "tsdx test",
     "lint": "tsdx lint",
@@ -23,7 +23,7 @@
     "dist"
   ],
   "dependencies": {
-    "@formium/utils": "^0.0.20",
+    "@formium/utils": "^0.1.0",
     "cross-fetch": "^3.0.5",
     "query-string": "^6.13.1",
     "tslib": "^2.0.0"

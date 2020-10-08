@@ -1,6 +1,6 @@
 {
   "name": "@formium/docs-data",
-  "version": "0.0.20",
+  "version": "0.1.0",
   "description": "Internal formium documentation data",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
