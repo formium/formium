@@ -44,7 +44,7 @@ Link a folder to a Formium project. This command will create `.formium` folder i
 
 ### `formium forms pull`
 
-Downloads all forms (just their schemas, not submissions) into `.formium` directory as JSON. This command is a work-in-progress. In the future, the goal is to couple this with client-side runtime helpers to access the data (kind of like Amplify does) in a way that is friendlier and ideally tree-shakeable.
+Downloads all forms (just their schemas, not submissions) into `.formium` directory as JSON. This command is a work-in-progress. In the future, the goal is to couple this with client-side runtime helpers to access the data (kind of like Amplify does) in a way that is friendlier and ideally tree shakeable.
 
 ## Reference
 
