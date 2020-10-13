@@ -2,7 +2,10 @@
   "$schema": "https://unpkg.com/@changesets/config@1.3.0/schema.json",
   "changelog": ["@changesets/changelog-github", { "repo": "formium/formium" }],
   "commit": false,
-  "linked": [],
+  "linked": [
+    ["@formium/cli", "@formium/client"],
+    ["gatsby-source-formium", "@formium/client"]
+  ],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
