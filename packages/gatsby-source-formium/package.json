@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-formium",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Gatsby source plugin for Formium",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
@@ -10,14 +10,14 @@
   },
   "main": "index.js",
   "peerDependencies": {
-    "@formium/client": "^0.1.0"
+    "@formium/client": "^0.1.1"
   },
   "dependencies": {
     "@zeit/fetch-retry": "^5.0.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@formium/client": "^0.1.0"
+    "@formium/client": "^0.1.1"
   },
   "publishConfig": {
     "access": "public"

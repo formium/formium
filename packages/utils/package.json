@@ -1,6 +1,6 @@
 {
   "name": "@formium/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Internal, shared utilities for Formium.",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
