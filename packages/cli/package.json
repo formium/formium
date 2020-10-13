@@ -1,6 +1,6 @@
 {
   "name": "@formium/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The Formium Command Line tool",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
@@ -25,7 +25,7 @@
     "formium": "./dist/index.js"
   },
   "dependencies": {
-    "@formium/client": "^0.1.0",
+    "@formium/client": "^0.1.1",
     "@zeit/fetch-retry": "5.0.0",
     "ajv": "^6.12.3",
     "ansi-escapes": "^4.3.1",
