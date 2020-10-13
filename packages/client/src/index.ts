@@ -192,6 +192,7 @@ export class FormiumClient {
    *
    * @param query - Query parameters
    * @param fetchOptions - Additional request options
+   * @returns A list of Forms
    * @public
    */
   findForms(
@@ -211,7 +212,7 @@ export class FormiumClient {
 
   /**
    * Return the current User (based on the token)
-   *
+   * @returns A User
    * @public
    */
   getMe(fetchOptions?: RequestInit): Promise<User> {
@@ -230,6 +231,7 @@ export class FormiumClient {
    *
    * @param id - Project id
    * @param fetchOptions - fetch overrides
+   * @returns A Project
    * @public
    */
   getProject(id: string, fetchOptions?: RequestInit): Promise<Project> {
@@ -246,7 +248,7 @@ export class FormiumClient {
 
   /**
    * Retrieve the Projects the user belongs to
-   *
+   * @returns A list of Projects
    * @public
    */
   getMyProjects(fetchOptions?: RequestInit): Promise<Results<Project>> {
@@ -275,7 +277,8 @@ export class FormiumClient {
 
   /**
    * Return a Project by slug
-   *
+   * @param projectSlug - A Project slug
+   * @returns A Project
    * @public
    */
   getProjectBySlug(
@@ -299,6 +302,7 @@ export class FormiumClient {
    * @param formSlug - form slug
    * @param query - Query parameters
    * @param fetchOptions - Additional request options
+   * @returns A Form
    * @public
    */
   getFormBySlug(
@@ -327,6 +331,7 @@ export class FormiumClient {
    *
    * @param submitId - The id of the submission
    * @param fetchOptions - Additional request options
+   * @returns A Submission
    * @public
    */
   getSubmit(submitId: string, fetchOptions?: RequestInit): Promise<Submit> {
@@ -390,8 +395,8 @@ export class FormiumClient {
    *
    * @param query - Query parameters
    * @param fetchOptions - Additional request options
+   * @returns A list of Submissions
    * @public
-   * @return
    */
   findSubmits(
     query: FindSubmitsQuery,
@@ -413,8 +418,7 @@ export class FormiumClient {
    * @param formSlug - form slug
    * @param query - Query parameters
    * @param fetchOptions - Additional request options
-   * @returns A Formium Form entity
-   *
+   * @returns A Form entity
    * @public
    */
   getFormById(
@@ -443,7 +447,6 @@ export class FormiumClient {
    *
    * @param formSlug - Slug of the Form
    * @param data - An object or FormData instance containing submission data.
-   *
    * @public
    */
   submitForm(formSlug: string, data: SubmitData): Promise<void> {
@@ -480,7 +483,8 @@ export class FormiumClient {
    *
    * @param formSlug - Slug of the Form
    * @param file - File to be uploaded
-   * @result URI of the uploaded file
+   * @returns URI of the uploaded file
+   * @public
    */
   uploadFile(formSlug: string, file: File): Promise<string | null> {
     let data = new FormData();
@@ -497,8 +501,7 @@ export class FormiumClient {
  *
  * @param projectSlug - Project slug
  * @param options - Client options
- *
- * @returns FormiumClient
+ * @returns A FormiumClient
  * @public
  */
 export function createClient(
