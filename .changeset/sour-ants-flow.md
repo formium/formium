@@ -1,6 +1,6 @@
 ---
 '@formium/cli': patch
-'@formium/client': patch
+'@formium/client': minor
 '@formium/docs-data': patch
 '@formium/eval': patch
 'gatsby-source-formium': patch
