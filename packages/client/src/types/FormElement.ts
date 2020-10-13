@@ -27,27 +27,27 @@ import { FormElementAction } from './FormElementAction';
 
 export interface FormElement {
   /**
-   * unique identifier
+   * Unique identifier
    */
   id: string;
 
   /**
-   * title of element
+   * Title of element
    */
   title?: string;
 
   /**
-   * administrative slug
+   * Administrative slug
    */
   slug: string;
 
   /**
-   * element type
+   * Element type
    */
   type: FormElementType;
 
   /**
-   * is the element required?
+   * Is the element required?
    */
   required?: boolean;
 
@@ -107,7 +107,7 @@ export interface FormElement {
   description?: string;
 
   /**
-   * should randomize options?
+   * Should randomize options?
    * @deprecated
    */
   randomize?: boolean;
@@ -131,7 +131,7 @@ export interface FormElement {
   actions?: Array<FormElementAction>;
 
   /**
-   * set of allowed upload types
+   * The set of allowed upload types
    */
   uploadTypes?: Array<FormElementUploadTypes>;
 }
