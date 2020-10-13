@@ -9,10 +9,15 @@
     "directory": "packages/gatsby-source-formium"
   },
   "main": "index.js",
+  "peerDependencies": {
+    "@formium/client": "^0.1.0"
+  },
   "dependencies": {
-    "@formium/client": "^0.1.0",
     "@zeit/fetch-retry": "^5.0.0",
     "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@formium/client": "^0.1.0"
   },
   "publishConfig": {
     "access": "public"
