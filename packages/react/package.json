@@ -23,10 +23,10 @@
     "dist"
   ],
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": "^16.8.0",
+    "@formium/client": "^0.1.0"
   },
   "dependencies": {
-    "@formium/client": "^0.1.0",
     "@formium/eval": "^0.1.0",
     "@formium/utils": "^0.1.0",
     "formik": "^2.1.4",
@@ -36,7 +36,8 @@
   "devDependencies": {
     "@types/yup": "^0.26.32",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "@formium/client": "^0.1.0"
   },
   "publishConfig": {
     "access": "public"
