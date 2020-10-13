@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
-import { Form } from './types/Form';
-import { User } from './types/User';
-import { Project } from './types/Project';
-import { APIError } from './errors';
 import qs from 'query-string';
+import { APIError } from './errors';
+import { Form } from './types/Form';
+import { Project } from './types/Project';
+import { Submit } from './types/Submit';
+import { User } from './types/User';
 
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
@@ -137,15 +138,29 @@ export interface PaginatedQuery {
 }
 /** @public */
 export interface FindFormsQuery extends PaginatedQuery {
-  /** With given action id */
+  /** With given Action id */
   actionId?: string;
   /** Return forms that have been updated starting at this date */
   updateStartAt?: string;
 }
 
+/**  @public */
+export interface FindSubmitsQuery extends PaginatedQuery {
+  /** With given Form id */
+  formId: string;
+  /** Sort by (-createAt, createAt) */
+  sort?: '-createAt' | 'createAt';
+}
+
+/**  @public */
+export interface DeleteSubmitsQuery {
+  /** List of Submission ids to delete */
+  ids: string;
+}
+
 /** @public */
 export interface GetFormQuery {
-  /** The id of the revision */
+  /** The id of the Revision */
   revisionId?: string;
 }
 
@@ -173,12 +188,10 @@ export class FormiumClient {
   }
 
   /**
-   * Return forms in a project
+   * Return Forms in a project
    *
    * @param query - Query parameters
    * @param fetchOptions - Additional request options
-   *
-   * @result A list of forms
    * @public
    */
   findForms(
@@ -197,7 +210,7 @@ export class FormiumClient {
   }
 
   /**
-   * Return the current user (based on the token)
+   * Return the current User (based on the token)
    *
    * @public
    */
@@ -215,16 +228,7 @@ export class FormiumClient {
   /**
    * Return a Project by id
    *
-   *
-   * ```jsx
-   * client.getProjectById('your_project_id')
-   *   .then(project => {
-   *     console.log(project)
-   *    })
-   *   .catch(error => console.log(error))
-   * ```
-   *
-   * @param id - Project Id
+   * @param id - Project id
    * @param fetchOptions - fetch overrides
    * @public
    */
@@ -241,7 +245,7 @@ export class FormiumClient {
   }
 
   /**
-   * Retrieve the projects the user belongs to
+   * Retrieve the Projects the user belongs to
    *
    * @public
    */
@@ -270,7 +274,7 @@ export class FormiumClient {
   }
 
   /**
-   * Return a project by slug
+   * Return a Project by slug
    *
    * @public
    */
@@ -290,7 +294,7 @@ export class FormiumClient {
   }
 
   /**
-   * Return a Form based on its slug and projectId
+   * Return a Form based on its slug
    *
    * @param formSlug - form slug
    * @param query - Query parameters
@@ -319,7 +323,92 @@ export class FormiumClient {
   }
 
   /**
-   * Return a Form given its ID
+   * Return a Submission
+   *
+   * @param submitId - The id of the submission
+   * @param fetchOptions - Additional request options
+   * @public
+   */
+  getSubmit(submitId: string, fetchOptions?: RequestInit): Promise<Submit> {
+    let url = `/v1/submit/${submitId}`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
+
+    return this._fetcher(url, options);
+  }
+
+  /**
+   * Delete a Submission
+   *
+   * @param submitId - The id of the Submission
+   * @param fetchOptions - Additional request options
+   * @public
+   */
+  deleteSubmit(submitId: string, fetchOptions?: RequestInit): Promise<void> {
+    let url = `/v1/submit/${submitId}`;
+    let options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
+
+    return this._fetcher(url, options);
+  }
+
+  /**
+   * Delete mulitple Submissions
+   *
+   * @param query - Query parameters
+   * @param fetchOptions - Additional request options
+   * @public
+   */
+  deleteSubmits(
+    query: DeleteSubmitsQuery,
+    fetchOptions?: RequestInit
+  ): Promise<void> {
+    let url = `/v1/submit?` + qs.stringify(query);
+    let options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    };
+
+    return this._fetcher(url, options);
+  }
+
+  /**
+   * Find Submissions of a given form
+   *
+   * @param query - Query parameters
+   * @param fetchOptions - Additional request options
+   * @public
+   * @return
+   */
+  findSubmits(
+    query: FindSubmitsQuery,
+    fetchOptions?: RequestInit
+  ): Promise<Results<Project>> {
+    let url = `/v1/submit?` + qs.stringify(query);
+    return this._fetcher(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      ...fetchOptions,
+    });
+  }
+
+  /**
+   * Return a Form given its id
    *
    * @param formSlug - form slug
    * @param query - Query parameters
@@ -350,9 +439,9 @@ export class FormiumClient {
   }
 
   /**
-   * Submit data to Formium Form
+   * Submit data to a Form
    *
-   * @param formSlug - Slug of the form
+   * @param formSlug - Slug of the Form
    * @param data - An object or FormData instance containing submission data.
    *
    * @public
@@ -419,15 +508,16 @@ export function createClient(
   return new FormiumClient(projectSlug, options);
 }
 
+export * from './types/CustomerAccess';
 export * from './types/Form';
-export * from './types/FormKey';
 export * from './types/FormElement';
 export * from './types/FormElementAction';
 export * from './types/FormElementActionDetails';
 export * from './types/FormElementActionDetailsTo';
+export * from './types/FormKey';
 export * from './types/FormSchema';
-export * from './types/User';
 export * from './types/Project';
 export * from './types/ProjectAccess';
 export * from './types/ProviderIdentity';
-export * from './types/CustomerAccess';
+export * from './types/Submit';
+export * from './types/User';
