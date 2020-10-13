@@ -22,6 +22,12 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@formium/client": "^0.1.0",
+    "@formium/cli": "^0.1.0",
+    "@formium/eval": "^0.1.0",
+    "@formium/utils": "^0.1.0"
+  },
   "devDependencies": {
     "@documentalist/client": "^2.5.0",
     "@documentalist/compiler": "^2.9.0",
