@@ -104,7 +104,7 @@ export interface FormControlProps {
   disabled: boolean;
 
   /**
-   * Whether field is required
+   * Whether field is required for submission.
    */
   required: boolean;
 
@@ -120,12 +120,13 @@ export interface FormControlProps {
   labelFor?: string;
 
   /**
-   * Optional helper text.
+   * Optional field help text / description.
    */
   description?: React.ReactNode;
 
   /**
-   * Error message (if present) and the current field has been visited, otherwise this will be undefined.
+   * The field's error message (if present). This will only be defined if the
+   * field's validation fails and the current field has been visited, otherwise this will be undefined.
    */
   error?: React.ReactNode;
 
