@@ -8,7 +8,8 @@
 
     ```shell
     # Create a new Gatsby site using the Formium blog starter
-    gatsby new my-blog-starter https://github.com/formium/formium/examples/gatsby-starter-blog
+    git clone https://github.com/formium/formium.git
+    gatsby new my-blog-starter formium/examples/gatsby-starter-blog
     cd my-blog-starter/
     ```
 
