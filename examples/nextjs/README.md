@@ -6,7 +6,7 @@ Download the example [or clone the repo](https://github.com/formium/formium):
 
 ```sh
 curl https://codeload.github.com/formium/formium/tar.gz/master | tar -xz --strip=2  formium-master/examples/nextjs
-cd nexjs
+cd nextjs
 ```
 
 Install it and run:
