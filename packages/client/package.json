@@ -1,6 +1,6 @@
 {
   "name": "@formium/client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Autogenerate IDs to facilitate WAI-ARIA and server rendering.",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
