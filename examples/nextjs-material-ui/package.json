@@ -3,8 +3,8 @@
   "version": "4.0.0",
   "private": true,
   "dependencies": {
-    "@formium/client": "^0.0.20",
-    "@formium/react": "^0.0.20",
+    "@formium/client": "latest",
+    "@formium/react": "latest",
     "@material-ui/core": "latest",
     "clsx": "latest",
     "next": "latest",

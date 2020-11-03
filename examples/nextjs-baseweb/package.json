@@ -8,8 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@formium/client": "^0.0.20",
-    "@formium/react": "^0.0.20",
+    "@formium/client": "latest",
+    "@formium/react": "latest",
     "baseui": "^9.99.0",
     "next": "9.5.5",
     "react": "16.13.1",
