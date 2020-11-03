@@ -24,8 +24,8 @@
     ]
   },
   "dependencies": {
-    "@formium/client": "^0.0.20",
-    "@formium/react": "^0.0.20",
+    "@formium/client": "latest",
+    "@formium/react": "latest",
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
