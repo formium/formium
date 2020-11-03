@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  *
  */
+import 'cross-fetch/polyfill';
 import qs from 'query-string';
 import { APIError } from './errors';
 import { Form } from './types/Form';

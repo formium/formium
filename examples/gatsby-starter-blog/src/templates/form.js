@@ -56,7 +56,6 @@ export const pageQuery = graphql`
       slug
       projectId
       schema
-      createAt
       updateAt
     }
   }
