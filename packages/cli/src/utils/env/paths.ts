@@ -16,6 +16,7 @@ export const paths = {
   appGitIgnore: resolveApp('.gitignore'),
   appRoot: resolveApp('.'),
   appFormium: resolveApp('.formium'),
+  appFormiumForms: resolveApp('.formium/forms'),
   appFormiumProjectJson: resolveApp('.formium/project.json'),
   appFormiumReadMe: resolveApp('.formium/README.txt'),
   appFormiumDataJson: resolveApp('.formium/data.json'),
