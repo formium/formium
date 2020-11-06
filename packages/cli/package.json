@@ -1,6 +1,6 @@
 {
   "name": "@formium/cli",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "The Formium Command Line tool",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
