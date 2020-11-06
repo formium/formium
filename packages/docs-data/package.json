@@ -1,6 +1,6 @@
 {
   "name": "@formium/docs-data",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Internal formium documentation data",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@formium/client": "^0.1.1",
-    "@formium/cli": "^0.1.1",
+    "@formium/cli": "^0.2.0",
     "@formium/eval": "^0.1.1",
     "@formium/utils": "^0.1.1"
   },
