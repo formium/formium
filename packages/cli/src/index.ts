@@ -14,6 +14,7 @@ import indexArray from 'just-index';
 import os from 'os';
 import sade from 'sade';
 import updateNotifier from 'update-notifier';
+import { resolveApp } from './utils/fs';
 import { paths } from './utils/env/paths';
 import { FormiumBuildError } from './utils/errors';
 import { createOutput } from './utils/output/createOutput';
@@ -230,8 +231,10 @@ prog
   })
   .command('forms pull')
   .describe('Pull latest forms from a project')
-  .action(async (opts: Options) => {
+  .option('--outDir, -o', 'Output directory for the forms')
+  .action(async (opts: Options & { outDir?: string }) => {
     let spinner;
+    const out = opts.outDir ? resolveApp(opts.outDir) : paths.appFormiumForms;
     try {
       const { apiClient, token } = await getTokenAndUser(opts.token);
       const currentProject = await getCurrentProject(apiClient, opts.project);
@@ -245,13 +248,12 @@ prog
         'Finding forms',
         scopedApiClient.findForms({ limit: 100 })
       );
-      await fs.writeJSON(paths.appFormiumDataJson, {
-        data: {
-          form: forms.data,
-        },
-        lastFetched: new Date(),
-        cliVersion: __VERSION__,
+      await fs.ensureDir(out);
+      forms.data.forEach(async form => {
+        await fs.writeJSON(out + '/' + form.slug + '.json', form);
       });
+      await fs.writeJSON(out + '/__all.json', forms.data);
+
       spinner();
       output.success(`Successfully pulled ${forms.data.length} forms`);
     } catch (error) {
