@@ -15,7 +15,7 @@ import {
   FormSchema,
   FormElement,
   FormElementType,
-} from '@formium/client';
+} from '@formium/types';
 import { evaluateLogic, LogicCondition } from '@formium/eval';
 
 export interface FormiumLogicProps {

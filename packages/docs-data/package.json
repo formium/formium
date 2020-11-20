@@ -14,8 +14,8 @@
   ],
   "main": "index.js",
   "scripts": {
-    "start": "chokidar ../react/src/* ../client/src/* -c \"npm run build; echo 'updated docs data'; yalc push; \"",
-    "build": "documentalist ../react/src/* ../client/src/* > ./data.json",
+    "start": "chokidar ../react/src/* ../types/src/* ../client/src/* -c \"npm run build; echo 'updated docs data'; yalc push; \"",
+    "build": "documentalist ../react/src/* ../types/src/* ../client/src/* > ./data.json",
     "prepublish": "npm run build",
     "test": ""
   },
