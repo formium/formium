@@ -8,10 +8,7 @@
 import 'cross-fetch/polyfill';
 import qs from 'query-string';
 import { APIError } from './errors';
-import { Form } from './types/Form';
-import { Project } from './types/Project';
-import { Submit } from './types/Submit';
-import { User } from './types/User';
+import { Submit, User, Form, Project } from '@formium/types';
 
 /**
  * Create a wrapper around fetch() with API base URL and default headers.
@@ -512,16 +509,4 @@ export function createClient(
   return new FormiumClient(projectSlug, options);
 }
 
-export * from './types/CustomerAccess';
-export * from './types/Form';
-export * from './types/FormElement';
-export * from './types/FormElementAction';
-export * from './types/FormElementActionDetails';
-export * from './types/FormElementActionDetailsTo';
-export * from './types/FormKey';
-export * from './types/FormSchema';
-export * from './types/Project';
-export * from './types/ProjectAccess';
-export * from './types/ProviderIdentity';
-export * from './types/Submit';
-export * from './types/User';
+export * from '@formium/types';

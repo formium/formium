@@ -23,11 +23,11 @@
     "dist"
   ],
   "peerDependencies": {
-    "react": "^16.8.0",
-    "@formium/client": "^0.1.1"
+    "react": "^16.8.0"
   },
   "dependencies": {
     "@formium/eval": "^0.1.1",
+    "@formium/types": "^0.1.1",
     "@formium/utils": "^0.1.1",
     "formik": "^2.1.4",
     "tslib": "^2.0.0",
