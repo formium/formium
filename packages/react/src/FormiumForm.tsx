@@ -672,7 +672,6 @@ function FormikWizard<Values extends FormikValues = FormikValues>({
         JSON.stringify({
           values: formikValues,
           touched,
-          errors,
           initialValues: formikInitialValues,
         })
       );
