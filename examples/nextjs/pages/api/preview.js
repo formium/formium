@@ -13,9 +13,9 @@ export default async (req, res) => {
   if (!form) {
     return res.status(404).json({ message: 'Form not found' });
   }
-  
+
   // If the request has a revisionId, it means it's for a preview, so
-  // we set res.previewData as an object with the revisionId. This is a cookie
+  // we set res.setPreviewData as an object with the revisionId. This is a cookie
   // that will be used by our Next.js page to fetch the correct data.
   // The reason we don't fetch the form revision here is because we are limited
   // by the size of the cookie we can set.
