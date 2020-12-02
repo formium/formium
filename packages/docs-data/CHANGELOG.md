@@ -1,5 +1,14 @@
 # @formium/docs-data
 
+## 0.1.3
+
+### Patch Changes
+
+- [`cfb6f00`](https://github.com/formium/formium/commit/cfb6f008d52d124b5036fd466ccef87e0fa33046) [#30](https://github.com/formium/formium/pull/30) Thanks [@jaredpalmer](https://github.com/jaredpalmer)! - Moved TS types to their own package `@formium/types` so that `@formium/react` doesn't need to have `@formium/client` as a peer dependency.
+
+- Updated dependencies [[`cfb6f00`](https://github.com/formium/formium/commit/cfb6f008d52d124b5036fd466ccef87e0fa33046)]:
+  - @formium/client@0.1.3
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@formium/react",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Official React library for Formium",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@formium/eval": "^0.1.1",
-    "@formium/types": "^0.1.1",
+    "@formium/types": "^0.1.2",
     "@formium/utils": "^0.1.1",
     "formik": "^2.1.4",
     "tslib": "^2.0.0",
@@ -37,7 +37,7 @@
     "@types/yup": "^0.26.32",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "@formium/client": "^0.1.1"
+    "@formium/client": "^0.1.3"
   },
   "publishConfig": {
     "access": "public"
