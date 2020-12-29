@@ -9,6 +9,7 @@
       "@formium/utils": ["packages/utils/src"],
       "@formium/client": ["packages/client/src"],
       "@formium/eval": ["packages/eval/src"],
+      "@formium/types": ["packages/types/src"],
       "@formium/react": ["packages/react/src"],
       "$test/*": ["test/*"]
     }

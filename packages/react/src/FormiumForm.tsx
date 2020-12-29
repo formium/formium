@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Form, FormElement, FormElementType } from '@formium/client';
+import { Form, FormElement, FormElementType } from '@formium/types';
 import { canUseDOM } from '@formium/utils';
 import {
   Field,
@@ -360,7 +360,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
   const initialValues: Values = getInitialValues(getElementsFromForm(form));
   const setFieldProperty = React.useCallback(
     (id: string, partial: Partial<FormElement>) => {
-      setForm(f => ({
+      setForm((f: Form) => ({
         ...f,
         schema: {
           ...(f.schema ?? {}),
@@ -502,7 +502,7 @@ export function FormiumForm<Values extends FormikValues = FormikValues>({
                                 options={
                                   children &&
                                   children.length > 0 &&
-                                  children.map(c => ({
+                                  children.map((c: any) => ({
                                     id: c.id,
                                     disabled: false,
                                     label: c.title,
