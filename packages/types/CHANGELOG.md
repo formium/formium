@@ -1,5 +1,11 @@
 # @formium/utils
 
+## 0.1.3
+
+### Patch Changes
+
+- [`82cc80d`](https://github.com/formium/formium/commit/82cc80da95fd542d96f61c54fe946c9b34a049c6) [#40](https://github.com/formium/formium/pull/40) Thanks [@jaredpalmer](https://github.com/jaredpalmer)! - Fix broken typescript import and unused package.json module field
+
 ## 0.1.2
 
 ### Patch Changes
