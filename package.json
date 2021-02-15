@@ -9,14 +9,13 @@
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "cypress": "^5.2.0",
-    "got": "10.0.4",
     "husky": "^4.3.0",
     "lerna": "^3.15.0",
     "lint-staged": "^10.4.0",
     "prettier": "^2.1.2",
-    "release": "6.0.1",
     "tsdx": "^0.13.2",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "yarn-deduplicate": "^3.1.0"
   },
   "workspaces": [
     "packages/*"
@@ -28,15 +27,15 @@
     "build": "lerna run build",
     "prepublish": "lerna run prepublish",
     "format": "prettier --write 'examples/*/src/**/*' 'packages/*/src/**/*' 'cypress/**/*.ts' 'e2e/pages/**/*.tsx'  'packages/*/test/**/*' 'README.md'",
-    "publish-canary": "lerna version prerelease --preid canary --force-publish && release --pre",
-    "publish-stable": "lerna version --force-publish && release && node ./scripts/release-notes.js",
     "git-reset": "git reset --hard HEAD",
     "git-clean": "git clean -d -x -e node_modules -e packages -f",
     "start:app": "yarn build && yarn --cwd node_modules/react link && yarn --cwd packages/react link && yarn --cwd ./e2e link react @formium/react && yarn --cwd ./e2e && yarn --cwd ./e2e run dev",
     "cypress:open": "cypress open",
     "cypress": "cypress run",
     "changeset": "changeset",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "deduplicate": "yarn-deduplicate -s fewer yarn.lock",
+    "deduplicate:check": "yarn-deduplicate -s fewer yarn.lock --list --fail"
   },
   "husky": {
     "hooks": {
