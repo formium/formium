@@ -635,7 +635,7 @@ function FormikWizard<Values extends FormikValues = FormikValues>({
       const isLastPage = page === React.Children.count(children) - 1;
 
       if (isLastPage) {
-        return onSubmit(currentValues).then(() => {
+        return onSubmit(currentValues, formikActions).then(() => {
           sessionStorage.removeItem(pageStorageKey);
           sessionStorage.removeItem(stateStorageKey);
         });
