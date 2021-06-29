@@ -26,7 +26,7 @@
     "test": "lerna run test --",
     "build": "lerna run build",
     "prepublish": "lerna run prepublish",
-    "format": "prettier --write 'examples/*/src/**/*' 'packages/*/src/**/*' 'cypress/**/*.ts' 'e2e/pages/**/*.tsx'  'packages/*/test/**/*' 'README.md'",
+    "format": "prettier --write 'examples/*/src/**/*' 'packages/*/src/**/*' 'cypress/**/*.ts' 'e2e/pages/**/*.tsx'  'packages/*/test/**/*' 'README.md' 'packages/gatsby-source-formium/**'",
     "git-reset": "git reset --hard HEAD",
     "git-clean": "git clean -d -x -e node_modules -e packages -f",
     "start:app": "yarn build && yarn --cwd node_modules/react link && yarn --cwd packages/react link && yarn --cwd ./e2e link react @formium/react && yarn --cwd ./e2e && yarn --cwd ./e2e run dev",
