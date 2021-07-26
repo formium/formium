@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-formium",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Gatsby source plugin for Formium",
   "author": "Jared Palmer <hello@formium.io>",
   "repository": {
