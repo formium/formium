@@ -1,5 +1,11 @@
 # @formium/react
 
+## 0.2.0
+
+### Minor Changes
+
+- [`33312dd`](https://github.com/formium/formium/commit/33312dda3a6538108147278b06aad6cfc10ac563) [#69](https://github.com/formium/formium/pull/69) Thanks [@jaredpalmer](https://github.com/jaredpalmer)! - Update react peer dependency to be >=16.8.x (allowing for React 17)
+
 ## 0.1.3
 
 ### Patch Changes
