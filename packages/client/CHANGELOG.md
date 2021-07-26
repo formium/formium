@@ -1,5 +1,11 @@
 # @formium/client
 
+## 0.1.4
+
+### Patch Changes
+
+- [`363ccd9`](https://github.com/formium/formium/commit/363ccd96bf10183da6229729adcd8496eb0c2f76) [#55](https://github.com/formium/formium/pull/55) Thanks [@jayphelps](https://github.com/jayphelps)! - Fix @formium/client 'module' path in package.json
+
 ## 0.1.3
 
 ### Patch Changes
