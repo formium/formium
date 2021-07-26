@@ -10,13 +10,13 @@ const fetch = require('@zeit/fetch-retry')(require('node-fetch'));
 const { createClient } = require('@formium/client');
 
 const digest = i =>
-  crypto
-    .createHash('md5')
-    .update(JSON.stringify(i))
-    .digest('hex');
+  crypto.createHash('md5').update(JSON.stringify(i)).digest('hex');
 
-exports.sourceNodes = async ({ actions, cache }, options = {}) => {
-  const { createNode } = actions;
+exports.sourceNodes = async (
+  { actions, cache, getNodesByType },
+  options = {}
+) => {
+  const { createNode, touchNode } = actions;
   const {
     projectId,
     accessToken,
@@ -51,6 +51,9 @@ exports.sourceNodes = async ({ actions, cache }, options = {}) => {
       };
       createNode(node);
     });
+
+    // Touch all FormiumForm nodes so they're not garbage collected
+    getNodesByType(`FormiumForm`).forEach(node => touchNode(node));
   } catch (e) {
     console.log(e);
   }
